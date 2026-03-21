@@ -13,7 +13,7 @@ CI-0123 Proyecto Integrador de Sistemas Operativos y Redes
 ### Students
 
 ```bash
-Jaffet Araya Góngora C4
+Jaffet Araya Góngora C4C537
 ```
 
 ```bash
