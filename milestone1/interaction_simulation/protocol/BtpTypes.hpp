@@ -27,6 +27,8 @@ namespace BtpTypes {
     TEXT_HTML_ALL_LEGO = 0x02,  // text/html/all-lego
     TEXT_ALL_LEGO      = 0x03,  // text/all-lego
     TEXT_LEGO          = 0x04,  // text/lego
+    TEXT_ALL_FIGURES   = 0x05,  // text/all-figures
+    TEXT_FIGURE        = 0x06,  // text/figure
   };
 
   /// @brief Convert BtpPacketType to a usable string.
@@ -47,6 +49,8 @@ namespace BtpTypes {
     case BtpContentType::TEXT_HTML_ALL_LEGO: return "text/html/all-lego";
     case BtpContentType::TEXT_ALL_LEGO:      return "text/all-lego";
     case BtpContentType::TEXT_LEGO:          return "text/lego";
+    case BtpContentType::TEXT_ALL_FIGURES:   return "all-figures";
+    case BtpContentType::TEXT_FIGURE:        return "text/figure";
     default:                                 return "NULL";
     }
   }
