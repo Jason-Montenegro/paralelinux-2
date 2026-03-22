@@ -3,12 +3,13 @@
 SRC_DIR=src
 BUILD_DIR=build
 BIN_DIR=bin
+LOG_DIR=logs
 LIBS_DIR=protocol
 BIN_NAME=simulation
 INCLUDES = -I$(SRC_DIR)/ -I$(LIBS_DIR)/
 
 # Runtime environment variables for running the simulation.
-# Modify if you have a different compiler. e.g clang, MSVC, etc.
+# Modify if you have a different compiler. e.g. clang, MSVC, etc.
 CXX=g++-15
 CXX_FLAGS=-std=c++20 \
 					-Wall \
@@ -52,11 +53,15 @@ clean:
 	rm -rf $(BUILD_DIR)
 	rm -rf $(BIN_DIR)
 
+clean-logs:
+	rm -rf $(LOG_DIR)
+
 help:
 	@echo "Available targets"
-	@echo "\tmake       : compiles the program"
-	@echo "\tmake run   : compiles and runs the program"
-	@echo "\tmake clean : erase all compiled files"
-	@echo "\tmake help  : get this target list"
+	@echo "\tmake       		 : compiles the program"
+	@echo "\tmake run   		 : compiles and runs the program"
+	@echo "\tmake clean 		 : erase all compiled files"
+	@echo "\tmake clean-logs : erase logs/ directory"
+	@echo "\tmake help  		 : get this target list"
 
 .PHONY: all run clean help
