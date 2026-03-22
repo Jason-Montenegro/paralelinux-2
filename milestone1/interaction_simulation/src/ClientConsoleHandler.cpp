@@ -16,8 +16,12 @@
 #define ESC "\x1B"
 #define END ESC"[0m"
 #define BOLD ESC"[1m"
-#define COLOR(c) ESC "[38;5;" #c "m"
-#define BACKGROUND(c) ESC "[48;5;"#c "m"
+// When using colors, the macros don't transform to the number so it needs two
+// more macros to do it. That's why NUM_TO_CSTR and COLOR_TO_NUM exist.
+#define NUM_TO_CSTR(x) #x
+#define COLOR_TO_NUM(x) NUM_TO_CSTR(x)
+#define COLOR(c) ESC "[38;5;" COLOR_TO_NUM(c) "m"
+#define BACKGROUND(c) ESC "[48;5;" COLOR_TO_NUM(c) "m"
 #define RED 196
 #define DARK_RED 160
 #define BLK 0
