@@ -7,6 +7,11 @@
 #include <string>
 #include <vector>
 
+#include <vector>
+#include <cstring>
+#include <string.h>
+#include <stdlib.h>
+
 #include "SSLSocket.h"
 #include "Socket.h"
 
@@ -159,6 +164,8 @@ std::vector<std::string> Lego_Client::solicitarMediaFigura(
   client = nullptr;
   return parseImages(body);
 }
+
+//strstr> search for first appear of chain from another chain. ret a pointer to first or Null.
 std::string Lego_Client::parseBody(const std::string& response) {
   std::string body;
   try {
@@ -170,15 +177,17 @@ std::string Lego_Client::parseBody(const std::string& response) {
     //  while ((bytes = this->client.Read(buffer, sizeof(buffer))) > 0) {
     //    response.append(buffer, bytes);
     //  }
-    size_t pos = response.find("\r\n\r\n");
+    size_t pos = response.find("\r\n\r\n"); //cuerpo despues de cabeceras
     if (pos != std::string::npos) {
       body = response.substr(pos + 4);
+
     }
   } catch (const std::exception& error) {
     // ocupo un throw creativo  NARCOCODE
   }
   return body;
 }
+
 
 // version super quemada
 // idea de Brandon Palacios usar Regex
@@ -224,3 +233,85 @@ std::vector<std::string> Lego_Client::parseImages(const std::string& body) {
   return images;
 }
 /// std::regex img_regex(R"(SRC="([^"]+)")");
+
+
+/* 
+*  Implementation of a parser of whole body HTML,
+*  takes messages and transforms to object LegoPiece, 
+*  takes num of piece and description
+*/
+std::vector<LegoPiece> Lego_Client::parseResponse(const std::string& response){
+  std::vector<LegoPiece> vectLegos;
+
+  //Locate http body
+  const char* body = strstr(response.c_str(), "\r\n\r\n");
+  if (body == nullptr){
+    throw std::runtime_error("Lego_Client::parseBody( const string) headers not found");
+  }
+  body +=4; //jump \r\n\r\n
+
+  // Locate table
+  const char* table =  strstr(body, "<TABLE");
+  if (!table){
+    throw std::runtime_error("Lego_Client::parseBody( const string)  Table not found");
+  }
+
+  // skip headers text <TR>
+  const char* ini = strstr(table, "<TR>");
+  if (!ini) return vectLegos;
+
+  const char* end = strstr(table, "</TR>");
+  if (!end)return vectLegos;
+
+  const char* pos = end + 5; // after </TR>
+
+  const char* row;
+  while ((row=strstr(pos, "<TR>"))!= nullptr){  
+    
+    // find number of piece, locate TD
+    const char* tdQty = strstr(row, "<TD");
+    if (!tdQty) break; 
+
+    const char* startNum = strchr(tdQty, '>'); 
+    startNum++; //space
+    const char* endNum = strstr(startNum, "</TD>");
+
+    // extract quantity
+    std::string num(startNum, endNum - startNum);
+    size_t notSpace = num.find_first_not_of(" \t\n\r");
+    if (notSpace!= std::string::npos){
+      num = num.substr(notSpace); // extract the string of number
+    }
+    int aux = 0;
+    try{ // try to stoi
+      aux = std::stoi(num);
+    }
+    catch(const std::exception& e){
+      pos = end;
+      continue;
+    }
+    
+    //Locate <TD>, for description of piece
+    const char* tdDesc = strstr(endNum, "<TD");
+    if (!tdDesc) break;
+    
+    const char* startDesc = strchr(tdDesc, '>');
+    if (!startDesc) break;
+    startDesc++;
+
+    const char* endDesc = strstr(startDesc, "</TD>");
+    if (!endDesc) break;
+
+    // Extract description
+    std::string description(startDesc, endDesc - startDesc);
+    size_t firstChar = description.find_first_not_of(" \t\n\r");
+    size_t lastChar = description.find_last_not_of(" \t\n\r");
+    if (firstChar != std::string::npos && lastChar != std::string::npos) {
+      description = description.substr(firstChar, lastChar - firstChar + 1);
+    }
+    vectLegos.emplace_back(aux, description);
+    pos = endDesc; // move to the end of this row for next iteration
+  }
+  return vectLegos;
+}
+/**/

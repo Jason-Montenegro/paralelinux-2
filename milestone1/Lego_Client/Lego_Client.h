@@ -7,6 +7,12 @@
 #include "SSLSocket.h"
 #include "Socket.h"
 
+struct LegoPiece {
+    int cantidad;
+    std::string descripcion;
+    LegoPiece(int c, std::string d) : cantidad(c), descripcion(d) {}
+};
+
 class Lego_Client {
  private:
   std::vector<std::string> figuras;
@@ -24,6 +30,9 @@ class Lego_Client {
   std::string parseBody(const std::string& response);
   std::vector<std::string> parseList(const std::string& body);
   std::vector<std::string> parseImages(const std::string& body);
+
+  //Parser Jafet
+  std::vector<LegoPiece> parseResponse(const std::string& body);
 
  public:
   Lego_Client(bool SSL = false, int puerto = 80, const char* host = nullptr);
