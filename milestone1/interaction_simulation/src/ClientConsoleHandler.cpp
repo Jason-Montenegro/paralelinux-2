@@ -5,7 +5,9 @@
 #include <iostream>
 #include <mutex>
 #include <optional>
+#include <stdexcept>
 #include <string>
+#include <string_view>
 #include <tuple>
 #include <utility>
 
@@ -17,7 +19,7 @@
 #define END ESC"[0m"
 #define BOLD ESC"[1m"
 // When using colors, the macros don't transform to the number so it needs two
-// more macros to do it. That's why NUM_TO_CSTR and COLOR_TO_NUM exist.
+// more macros to do it. That's why NUM_TO_CSTR and COLOR_TO_NUM exist
 #define NUM_TO_CSTR(x) #x
 #define COLOR_TO_NUM(x) NUM_TO_CSTR(x)
 #define COLOR(c) ESC "[38;5;" COLOR_TO_NUM(c) "m"
@@ -30,6 +32,7 @@
 #define YELLOW 230
 #define ORANGE 208
 #define LIGHT_ORANGE 215
+#define GREEN 46
 
 const std::array<std::pair<std::string, BtpTypes::BtpContentType>, 5>
   ClientConsoleHandler::inputOptions{{
@@ -87,7 +90,7 @@ void ClientConsoleHandler::printRequestTypePrompt() {
     BOLD "." END "\n", "Para terminar la simulación, ingrese: ", "STOP"
   );
   ::printf(BOLD "%s" END "\n", "Seleccione algún tipo de petición.");
-  ::printf(BOLD "%s: " END, "Cliente");
+  ::printf(BOLD "%s:" END, "Cliente");
 }
 
 void ClientConsoleHandler::printContentPrompt(std::string_view inputOptionId)
@@ -113,7 +116,7 @@ BtpPacket ClientConsoleHandler::createRequestPacket(const IpAddressTuple&
 BtpPacket ClientConsoleHandler::createStopPacket(const IpAddressTuple&
   ipTuple) {
   // Content type and content attributes are irrelevant because STOP packet
-  // type is for stopping a simulation.
+  // type is for stopping a simulation
   return BtpPacket::builder()
     .setIpType(std::get<BtpTypes::IpType>(ipTuple))
     .setSourceIp(std::string(std::get<1>(ipTuple)))
@@ -132,7 +135,22 @@ void ClientConsoleHandler::notifyError(std::string_view errorMessage) {
 
 void ClientConsoleHandler::showBtpPacket(const BtpPacket& packet) {
   std::lock_guard lock(this->mtx);
-  std::cout << "\n" BOLD BACKGROUND(WHITE) COLOR(BLK)
-    << " Enviaste el siguiente paquete BTP " << END "\n" BOLD << packet << END
-    "\n" << std::endl;
+  std::cout << "\n" BOLD BACKGROUND(WHITE) " ";
+  switch (packet.getBtpPacketType()) {
+    case BtpTypes::BtpPacketType::REQUEST:
+      std::cout << COLOR(GREEN) "Paquete enviado";
+      break;
+    case BtpTypes::BtpPacketType::RESPONSE:
+      std::cout << COLOR(GREEN) "Paquete recibido";
+      break;
+    case BtpTypes::BtpPacketType::UNREACHABLE:
+      std::cout << COLOR(GRAY) "Paquete no alcanzó su destino";
+      break;
+    case BtpTypes::BtpPacketType::STOP:
+      std::cout << COLOR(RED) "Paquete detuvo la simulación";
+      break;
+    default:
+      throw std::logic_error("Unreachable BtpPacketType case was reached");
+  }
+  std::cout << " " END "\n" BOLD << packet << END "\n" << std::endl;
 }

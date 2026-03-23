@@ -2,10 +2,13 @@
 #ifndef CLIENT_CONSOLE_HANDLER_HPP
 #define CLIENT_CONSOLE_HANDLER_HPP
 
+#include <array>
 #include <mutex>
 #include <optional>
+#include <string_view>
 #include <string>
 #include <tuple>
+#include <utility>
 
 #include "BtpPacket.hpp"
 #include "BtpTypes.hpp"
