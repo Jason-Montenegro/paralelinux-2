@@ -2,72 +2,39 @@
 #include "Server.hpp"
 
 #include <condition_variable>
-#include <cstddef>
 #include <mutex>
-#include <string>
 #include <tuple>
-#include <unordered_map>
-#include <utility>
-#include <vector>
 
 #include "BtpPacket.hpp"
+#include "BtpTypes.hpp"
 #include "ControlTuple.hpp"
+#include "Log.hpp"
 #include "ThreadSafeQueue.hpp"
-
-const std::unordered_map
-  <std::string, std::vector<std::vector<std::pair<size_t, std::string>>>>
-  Server::legoFigureRequirements{
-  {
-    {
-      "fish", {
-        {  // Part 1
-          {3, "brick 2x4 yellow"},
-          {1, "brick 2x3 yellow"},
-          {2, "brick 1x1 yellow eye"},
-        },
-        {  // Part 2
-          {2, "brick 2x2 translucent blue"},
-          {4, "brick 2x2 translucent red"},
-        },
-      }
-    },
-    {
-      "duck", {
-        {  // Part 1
-          {1, "brick 2x2 slope orange"},
-          {2, "brick 2x3 yellow"},
-          {2, "brick 2x2 yellow"},
-        },
-        {  // Part 2
-          {2, "brick 1x1 yellow eye"},
-          {1, "brick 2x1 yellow"},
-          {1, "brick 2x4 slope orange"},
-        },
-      }
-    }
-  }
-};
 
 Server::Server(ThreadSafeQueue<BtpPacket>& intermediaryToServer,
   ThreadSafeQueue<BtpPacket>& serverToIntermediary)
   : intermediaryToServer(intermediaryToServer),
-    serverToIntermediary(serverToIntermediary) {
-  // Copy the lego figure requirements as lego inventory
-  for (const auto& figure : Server::legoFigureRequirements) {
-    for (const auto& part : figure.second) {
-      for (const auto& entry : part) {
-        this->legoInventory[entry.second] = entry.first;
-      }
-    }
-  }
-}
+    serverToIntermediary(serverToIntermediary) { }
 
-void Server::run(ControlTuple serverControl, std::mutex& coutMtx) {
+void Server::run(ControlTuple serverControl) {
   this->signalToIntermediary(serverControl);
+  // Log must be already started from the program entry point
+  Log& log = Log::getInstance();
 
   while (true) {
-    // TODO: pending server interaction
-    break;
+    const BtpPacket request = this->intermediaryToServer.wait_and_pop();
+    log.write(Log::Category::INFO, "Server received intermediary request "
+      "packet.");
+
+    if (request.getBtpPacketType() == BtpTypes::BtpPacketType::STOP) {
+      log.write(Log::Category::INFO, "Server thread is going offline.");
+      break;
+    }
+
+    BtpPacket response = this->legoService.handle(request);
+    log.write(Log::Category::INFO, "Server redirecting packet to "
+      "intermediary.");
+    this->serverToIntermediary.push(std::move(response));
   }
 }
 
