@@ -300,11 +300,8 @@ Formato del contenido:
 
 #### Alternativa 2: text/lego
 
-Esta alternativa devuelve una pieza Lego específica del inventario. Se puede
-pedir una cantidad arbitraria, siempre y cuando el inventario tenga esa
-cantidad. En caso de que el inventario tenga menos piezas de las que se le
-piden, enviará las que pueda. Y también deberá reducir su cantidad de piezas
-actuales de su inventario.
+Esta alternativa devuelve una pieza Lego específica del inventario. Sirve
+para ver la cantidad disponible de un lego existente.
 
 | Paquete BTP | Valor |
 | -------- | -------- |
@@ -313,8 +310,17 @@ actuales de su inventario.
 | destination-ip | Dirección IP del servidor destino |
 | packet-type | REQUEST |
 | content-type | text/lego |
-| content-length | /_número de bytes del contenido_/ |
-| content | /_cantidad requerida >= 1_/ |
+| content-length | /_tamaño variable_/ |
+| content | /_descripción literal de pieza_/ |
+
+La descripción del lego debe ser exactamente la descipción de algún lego
+que el servidor diga que tiene.
+
+Ejemplo de uso:
+
+```bash
+brick 2x4 yellow
+```
 
 Posterior a eso, el cliente esperará por un paquete de respuesta. Cuando llegue
 el paquete respuesta, tendrá la siguiente forma:
@@ -336,11 +342,17 @@ Formato del contenido:
 ```
 
 El valor de __$__ puede ser menor o igual a la cantidad solicitada. En caso de
-que el inventario no tenga inventario de la pieza específica, el formato del
+que el inventario no tenga unidades de la pieza específica, el formato del
 contenido es el siguiente:
 
 ```bash
 "quantity":0,"description":"no inventory"
+```
+
+En caso de que no se reconozca esa figura, la respuesta será como la siguiente:
+
+```bash
+"quantity":0,"description":"unknown lego"
 ```
 
 ## Interacción intermediario y servidor
@@ -499,11 +511,8 @@ Formato del contenido:
 
 #### Alternativa 2: text/lego
 
-Esta alternativa devuelve una pieza Lego específica del inventario. Se puede
-pedir una cantidad arbitraria, siempre y cuando el inventario tenga esa
-cantidad. En caso de que el inventario tenga menos piezas de las que se le
-piden, enviará las que pueda. Y también deberá reducir su cantidad de piezas
-actuales de su inventario.
+Esta alternativa devuelve una pieza Lego específica del inventario. Sirve
+para ver la cantidad disponible de un lego existente.
 
 | Paquete BTP | Valor |
 | -------- | -------- |
@@ -512,8 +521,17 @@ actuales de su inventario.
 | destination-ip | Dirección IP del servidor destino |
 | packet-type | REQUEST |
 | content-type | text/lego |
-| content-length | /_número de bytes del contenido_/ |
-| content | /_cantidad requerida >= 1_/ |
+| content-length | /_tamaño variable_/ |
+| content | /_descripción literal de pieza_/ |
+
+La descripción del lego debe ser exactamente la descipción de algún lego
+que el servidor diga que tiene.
+
+Ejemplo de uso:
+
+```bash
+brick 2x4 yellow
+```
 
 Posterior a eso, el intermediario esperará por un paquete de respuesta. Cuando
 llegue el paquete respuesta, tendrá la siguiente forma:
@@ -535,9 +553,15 @@ Formato del contenido:
 ```
 
 El valor de __$__ puede ser menor o igual a la cantidad solicitada. En caso de
-que el inventario no tenga inventario de la pieza específica, el formato del
+que el inventario no tenga unidades de la pieza específica, el formato del
 contenido es el siguiente:
 
 ```bash
 "quantity":0,"description":"no inventory"
+```
+
+En caso de que no se reconozca esa figura, la respuesta será como la siguiente:
+
+```bash
+"quantity":0,"description":"unknown lego"
 ```
