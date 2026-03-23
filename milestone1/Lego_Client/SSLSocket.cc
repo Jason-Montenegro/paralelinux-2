@@ -144,10 +144,27 @@ void SSLSocket::InitContext(bool serverContext) {
  *
  *  @param	const char * certFileName, file containing certificate
  *  @param	const char * keyFileName, file containing keys
- *
+ *  
  **/
-void SSLSocket::LoadCertificates(const char* certFileName,
-                                 const char* keyFileName) {}
+void SSLSocket::LoadCertificates(const char* certFileName, const char* keyFileName) {
+  //load cert using global context
+  SSL_CTX* ctx = (SSL_CTX*) this->Context;
+
+  if(SSL_CTX_use_certificate_file(ctx, certFileName, SSL_FILETYPE_PEM)<=0){
+    ERR_print_errors_fp(stderr);
+    throw std::runtime_error("SSLSocket::LoadCertificates(char*, char*) 1 use Certificate");
+  } 
+  // set private key from keyFileName
+  if(SSL_CTX_use_PrivateKey_file(ctx, keyFileName, SSL_FILETYPE_PEM) <= 0 ){
+    ERR_print_errors_fp(stderr);
+    throw std::runtime_error("SSLSocket::LoadCertificates(char*, char*) 2 use PrivateKey");
+  }
+  //verify private key
+  if(SSL_CTX_check_private_key(ctx)){
+    ERR_print_errors_fp(stderr);
+    throw std::runtime_error("SSLSocket::LoadCertificates(char*, char*) 2 verify PrivateKey");
+  }
+}
 
 /**
  *  Connect
@@ -166,8 +183,7 @@ int SSLSocket::Connect(const char* hostName, int port) {
   //  Call SSL_connect()
   //  check for errors
 
-  st = this->TryToConnect(hostName,
-                          port);  // Establish a non ssl connection first
+  st = this->TryToConnect(hostName,port);  // Establish a non ssl connection first
   SSL_set_fd((SSL*)this->BIO, this->idSocket);
   st = SSL_connect((SSL*)this->BIO);
   if (st <= 0) {
@@ -233,14 +249,13 @@ size_t SSLSocket::Read(void* buffer, size_t size) {  // donde demonios saco
  *  Writes data to a secure channel
  *
  **/
-size_t SSLSocket::Write(const char* string) {
-  int st = -1;
-  st = this->Write(string, strlen(string));
-  // if ( -1 == st ) {
-  //    throw std::runtime_error( "SSLSocket::Write( const char * ) 1 sttt" );
-  // }
+size_t SSLSocket::Write( const char * string ){
+   int st = SSL_write((SSL*)this->BIO, (void*) string, strlen(string));
+   if ( st<=0 ) {
+      throw std::runtime_error( "SSLSocket::Write( const char * ) st" );
+   }
 
-  return st;
+   return st;
 }
 
 /**
