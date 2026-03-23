@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <ostream>
 #include <span>
+#include <string_view>
 #include <string>
 #include <vector>
 
@@ -16,6 +17,8 @@ class BtpProtocol;
 /// @brief BtpPacket builder object for using BtpProtocol strategy.
 class BtpPacket {
 public:
+  friend BtpProtocol;
+
   /// @brief Fixed value for handling the packet.
   static constexpr size_t TOTAL_HEADERS_LENGTH = 39;
 
@@ -44,38 +47,6 @@ public:
   
   /// @brief Returns the packet content.
   const std::vector<std::byte>& getContent() const;
-
-  /// @brief Parses IP type from headers.
-  /// @throws std::runtime_error if headers have insufficient sizing.
-  static BtpTypes::IpType parseIpType(std::span<const std::byte> headers);
-
-  /// @brief Parses source IP from headers.
-  /// @throws std::runtime_error if headers have insufficient sizing.
-  /// @throws std::runtime_error when headers contain an unrecognizeable IP
-  ///   address.
-  static std::string parseSourceIp(std::span<const std::byte> headers,
-    BtpTypes::IpType ipType);
-
-  /// @brief Parses destination IP from headers.
-  /// @throws std::runtime_error if headers have insufficient sizing.
-  /// @throws std::runtime_error when headers contain an unrecognizeable IP
-  ///   address.
-  static std::string parseDestinationIp(std::span<const std::byte> headers,
-    BtpTypes::IpType ipType);
-  
-  /// @brief Parses BTP packet type. 
-  /// @throws std::runtime_error if headers have insufficient sizing.
-  static BtpTypes::BtpPacketType parseBtpPacketType(std::span<const std::byte>
-    headers);
-  
-  /// @brief Parses BTP content type. 
-  /// @throws std::runtime_error if headers have insufficient sizing.
-  static BtpTypes::BtpContentType parseBtpContentType(std::span<const std::byte>
-    headers);
-  
-  /// @brief Parses content length. 
-  /// @throws std::runtime_error if headers have insufficient sizing.
-  static uint32_t parseContentLength(std::span<const std::byte> headers);
 
   /// @brief Printing overload.
   friend std::ostream& operator<<(std::ostream& os, const BtpPacket& packet);
@@ -149,7 +120,6 @@ private:
   BtpTypes::BtpPacketType packetType = BtpTypes::BtpPacketType::REQUEST;
   BtpTypes::BtpContentType contentType = BtpTypes::BtpContentType::TEXT_PLAIN;
 
-private:
   /// @brief Fixed values for manipulating the packet.
   static constexpr size_t IP_MEMBER_SIZE        = 16;
   static constexpr size_t IPV4_BYTE_SIZE        = 4;
@@ -167,6 +137,38 @@ private:
     BtpPacket::PACKET_TYPE_OFFSET + 1;
   static constexpr size_t CONTENT_LENGTH_OFFSET =
     BtpPacket::CONTENT_TYPE_OFFSET + 1;
+
+  /// @brief Parses IP type from headers.
+  /// @throws std::runtime_error if headers have insufficient sizing.
+  static BtpTypes::IpType parseIpType(std::span<const std::byte> headers);
+
+  /// @brief Parses source IP from headers.
+  /// @throws std::runtime_error if headers have insufficient sizing.
+  /// @throws std::runtime_error when headers contain an unrecognizeable IP
+  ///   address.
+  static std::string parseSourceIp(std::span<const std::byte> headers,
+    BtpTypes::IpType ipType);
+
+  /// @brief Parses destination IP from headers.
+  /// @throws std::runtime_error if headers have insufficient sizing.
+  /// @throws std::runtime_error when headers contain an unrecognizeable IP
+  ///   address.
+  static std::string parseDestinationIp(std::span<const std::byte> headers,
+    BtpTypes::IpType ipType);
+  
+  /// @brief Parses BTP packet type. 
+  /// @throws std::runtime_error if headers have insufficient sizing.
+  static BtpTypes::BtpPacketType parseBtpPacketType(std::span<const std::byte>
+    headers);
+  
+  /// @brief Parses BTP content type. 
+  /// @throws std::runtime_error if headers have insufficient sizing.
+  static BtpTypes::BtpContentType parseBtpContentType(std::span<const std::byte>
+    headers);
+  
+  /// @brief Parses content length. 
+  /// @throws std::runtime_error if headers have insufficient sizing.
+  static uint32_t parseContentLength(std::span<const std::byte> headers);
 
   /// @brief Checks if the headers argument greater or equal to
   ///   BtpPacket::TOTAL_HEADERS_LENGTH.
