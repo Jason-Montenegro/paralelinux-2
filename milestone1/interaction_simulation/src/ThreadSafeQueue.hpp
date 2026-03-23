@@ -5,13 +5,14 @@
 #include <condition_variable>
 #include <mutex>
 #include <queue>
+#include <utility>
 
 template <typename T>
 class ThreadSafeQueue {
 public:
-	void push(T value) {
+	void push(T&& value) {
 		std::lock_guard lock(this->mtx);
-		this->queue.push(value);
+		this->queue.push(std::forward<T>(value));
 		this->cv.notify_one();
 	}
 
