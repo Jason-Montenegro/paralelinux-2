@@ -10,7 +10,7 @@ INCLUDES = -I$(SRC_DIR)/ -I$(LIBS_DIR)/
 
 # Runtime environment variables for running the simulation.
 # Modify if you have a different compiler. e.g. clang, MSVC, etc.
-CXX=g++-15
+CXX=g++
 CXX_FLAGS=-std=c++20 \
 					-Wall \
 					-Wextra \
