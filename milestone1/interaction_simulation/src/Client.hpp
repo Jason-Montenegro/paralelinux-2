@@ -17,7 +17,7 @@ public:
   void run(ControlTuple intermediaryControl, std::mutex& coutMtx);
 
 private:
-  /// @brief Concurrency control helper
+  /// @brief Concurrency control helper.
   void waitOnIntermediary(ControlTuple intermediaryControl) const;
 
   ThreadSafeQueue<BtpPacket>& clientToIntermediary;
