@@ -2,8 +2,6 @@
 #ifndef INTERMEDIARY_HPP
 #define INTERMEDIARY_HPP
 
-#include <mutex>
-
 #include "BtpPacket.hpp"
 #include "ControlTuple.hpp"
 #include "ThreadSafeQueue.hpp"
@@ -16,8 +14,7 @@ public:
     ThreadSafeQueue<BtpPacket>& serverToIntermediary);
 
   /// @brief Run the intermediary simulation.
-  void run(ControlTuple intermediaryControl, ControlTuple serverControl,
-    std::mutex& coutMtx);
+  void run(ControlTuple intermediaryControl, ControlTuple serverControl);
 
 private:
   /// @brief Concurrency control helper.

@@ -4,9 +4,11 @@
 #include <condition_variable>
 #include <mutex>
 #include <tuple>
+#include <utility>
 
 #include "BtpPacket.hpp"
 #include "ControlTuple.hpp"
+#include "Log.hpp"
 #include "ThreadSafeQueue.hpp"
 
 Intermediary::Intermediary(ThreadSafeQueue<BtpPacket>& clientToIntermediary,
@@ -19,13 +21,35 @@ Intermediary::Intermediary(ThreadSafeQueue<BtpPacket>& clientToIntermediary,
     serverToIntermediary(serverToIntermediary) { }
 
 void Intermediary::run(ControlTuple intermediaryControl,
-  ControlTuple serverControl, std::mutex& coutMtx) {
+  ControlTuple serverControl) {
   this->waitOnServer(serverControl);
   this->signalToClient(intermediaryControl);
+  // Log must be already started from the program entry point
+  Log& log = Log::getInstance();
 
   while (true) {
-    // TODO: pending intermediary interaction
-    break;
+    BtpPacket clientRequest = this->clientToIntermediary.wait_and_pop();
+    log.write(Log::Category::INFO, "Intermediary received client request "
+      "packet.");
+    log.write(Log::Category::INFO, "Intermediary redirecting packet to "
+      "server.");
+    const bool exitSimulation =
+      clientRequest.getBtpPacketType() == BtpTypes::BtpPacketType::STOP;
+    this->intermediaryToServer.push(std::move(clientRequest));
+
+    // This condition is only for simulation programs.
+    if (exitSimulation) {
+      log.write(Log::Category::INFO, "Intermediary thread is going offline.");
+      break;
+    }
+
+    // Wait for the response packet
+    BtpPacket serverResponse = this->serverToIntermediary.wait_and_pop();
+    log.write(Log::Category::INFO, "Intermediary received server request "
+      "packet.");
+    log.write(Log::Category::INFO, "Intermediary redirecting packet to "
+      "client.");
+    this->intermediaryToClient.push(std::move(serverResponse));
   }
 }
 
