@@ -5,6 +5,7 @@
 #include <filesystem>
 #include <fstream>
 #include <mutex>
+#include <string_view>
 #include <string>
 
 /// @brief Logger for generating log files.
