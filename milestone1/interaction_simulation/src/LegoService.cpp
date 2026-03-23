@@ -61,6 +61,6 @@ BtpPacket LegoService::buildResponse(const BtpPacket& request,
     .setDestinationIp(request.getSourceIp())
     .setBtpPacketType(BtpTypes::BtpPacketType::RESPONSE)
     .setBtpContentType(contentType)
-    .setContent(std::move(BtpTypes::messageToBtpContent(content)))
+    .setContent(BtpTypes::messageToBtpContent(content))
     .build();
 }
