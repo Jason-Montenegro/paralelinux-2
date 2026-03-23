@@ -26,20 +26,20 @@ int main() {
 	);
 	Server server(intermediaryToServer, serverToIntermediary);
 
-	// // Make intermediary concurrency control group
+	// Make intermediary concurrency control group
 	std::mutex intermediaryMtx;
 	std::condition_variable intermediaryCv;
 	bool intermediaryReady = false;
 	ControlTuple intermediaryControl(std::tie(intermediaryMtx,
 		intermediaryCv, intermediaryReady));
 
-	// // Make server concurrency control group
+	// Make server concurrency control group
 	std::mutex serverMtx;
 	std::condition_variable serverCv;
 	bool serverReady = false;
 	ControlTuple serverControl(std::tie(serverMtx, serverCv, serverReady));
 
-	// Mutex to protect standard output.
+	// Mutex to protect standard output
 	std::mutex coutMtx;
 
 	Log& log = Log::getInstance();
@@ -50,12 +50,12 @@ int main() {
 		});
 
 		std::jthread intermediaryThread([&intermediary, &intermediaryControl,
-			&serverControl, &coutMtx] {
-			intermediary.run(intermediaryControl, serverControl, coutMtx);
+			&serverControl] {
+			intermediary.run(intermediaryControl, serverControl);
 		});
 
-		std::jthread serverThread([&server, &serverControl, &coutMtx] {
-			server.run(serverControl, coutMtx);
+		std::jthread serverThread([&server, &serverControl] {
+			server.run(serverControl);
 		});	
 	}
 	log.stop();
