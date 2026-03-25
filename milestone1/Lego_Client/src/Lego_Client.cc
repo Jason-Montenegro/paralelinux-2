@@ -70,7 +70,7 @@ std::string Lego_Client::readResponse() {
   try {
     // Leer respuesta
     ssize_t  bytes;
-    while ((bytes = static_cast<ssize_t>(client->Read(buffer, sizeof(buffer)))) > 0) {
+    while ((bytes = static_cast<ssize_t>(client->Read(buffer, sizeof(buffer)))) > 0) { // 
       response.append(buffer, bytes);
     }
   } catch (const std::exception& e) {
@@ -204,14 +204,6 @@ void Lego_Client::cicloCliente() {
          
         }
 
-        // std::cout << "URL Imagenes" << std::endl;
-        // las url de las imagenes que aun no ocupamos
-        //  for (const auto& f : set_figuras1) {
-        //    std::cout << f << std::endl;
-        //  }
-        //  for (const auto& f : set_figuras2) {
-        //    std::cout << f << std::endl;
-        //  }
       }
 
     } catch (const std::exception& e) {
@@ -283,29 +275,24 @@ std::vector<std::string> Lego_Client::parseList(const std::string& body) {
   return figuras;
 }
 
+
 void Lego_Client::parseFigures(const std::string& body) {
-  std::regex img_regex(R"img(SRC="([^"]+)")img");
+
+  std::regex row_regex(
+    R"ROW(<TR><TD ALIGN=center>\s*(\d+)\s*</TD>[\s\S]*?SRC="([^"]+)")ROW"
+  );
   std::smatch match;
-  std::string::const_iterator searchStart(body.cbegin());
-  while (std::regex_search(searchStart, body.cend(), match, img_regex)) {
-    std::string ruta = match[1];
-
+  auto it = body.cbegin();
+  while (std::regex_search(it, body.cend(), match, row_regex)) {
+    int cantidad = std::stoi(match[1]);
+    std::string ruta = match[2];
     if (ruta.find("/lego/images/") != std::string::npos) {
-      size_t slash = ruta.find_last_of('/');
-      std::string nombre = ruta.substr(slash + 1);
-      size_t punto = nombre.find_last_of('.');
-      if (punto != std::string::npos) {
-        nombre = nombre.substr(0, punto);
-        //
-      }
-
-      ++this->lego_figuras[nombre];
+      std::string nombre = ruta.substr(ruta.find_last_of('/') + 1);
+      nombre = nombre.substr(0, nombre.find_last_of('.'));
+      this->lego_figuras[nombre] += cantidad;
     }
 
-    searchStart = match.suffix().first;
+    it = match.suffix().first;
   }
-
-  // return images;
 }
 
-/// std::regex img_regex(R"(SRC="([^"]+)")");
