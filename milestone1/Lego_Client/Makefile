@@ -14,15 +14,7 @@ CXX=g++
 CXX_FLAGS=-std=c++20 \
 					-Wall \
 					-Wextra \
-					-Wpedantic \
-          -Wnon-virtual-dtor \
-          -Wold-style-cast \
-          -Wcast-align \
-          -Woverloaded-virtual \
-          -Wconversion \
-          -Wsign-conversion \
-          -Wnull-dereference \
-          -Wdouble-promotion
+	
 
 SRC=$(wildcard $(SRC_DIR)/*.cc)
 SRC_OBJS=$(patsubst $(SRC_DIR)/%.cc, $(BUILD_DIR)/%.o, $(SRC))

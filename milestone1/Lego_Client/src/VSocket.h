@@ -17,7 +17,7 @@
 class VSocket {
    public:
        void Init( char, bool = false );
-      ~VSocket();
+      virtual ~VSocket();
 
       void Close();
       int TryToConnect( const char *, int );
@@ -29,6 +29,7 @@ class VSocket {
       virtual size_t Read( void *, size_t ) = 0;
       virtual size_t Write( const void *, size_t ) = 0;
       virtual size_t Write( const char * ) = 0;
+
 
       int Bind( int );
       int BindIPv4( int );

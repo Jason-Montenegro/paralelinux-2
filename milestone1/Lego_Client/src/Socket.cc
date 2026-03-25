@@ -80,12 +80,12 @@ int Socket::Connect(const char* host, const char* service) {
 size_t Socket::Read(void* buffer, size_t size) {
   //  ssize_t read(int fd, void buf[.count], size_t count);
 
-  size_t st = read(this->idSocket, buffer, size);
+  ssize_t  st = read(this->idSocket, buffer, size);
   if (-1 == st) {
     throw std::runtime_error("Socket::Read( void *, size_t )");
   }
 
-  return st;
+  return static_cast<size_t>(st);
 }
 
 /**
@@ -100,11 +100,11 @@ size_t Socket::Write(const void* buffer, size_t size) {
   // ocupo el sockfd del file descriptor
   // ssize_t write(int fd, const void buf[.count], size_t count);
   // no se que es ssize t pero wsl medio loquita con mi int sszite_t
-  size_t st = write(this->idSocket, buffer, size);
+  ssize_t st = write(this->idSocket, buffer, size);
   if (-1 == st) {
     throw std::runtime_error("Socket::Write( void *, size_t )");
   }
-  return st;
+  return  static_cast<size_t>(st);;
 }
 
 /**

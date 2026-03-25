@@ -13,7 +13,7 @@
 
 // no se si se quejara jason que es mejor un define o alguna vaina loca que
 
-static const char* SERVER_HOST = "os.ecci.ucr.ac.cr";
+//  
 static const char* HTTPS_PORT = "443";
 static const char* HTTP_PORT = "80";
 
@@ -61,7 +61,7 @@ std::string Lego_Client::buildListRequest() {
 
 Lego_Client::Lego_Client(int ipVer, int SSL, const char* host,
                          const char* lego_ip)
-    : client(nullptr), lego_ip(lego_ip), host(host), SSL(SSL), ipVer(ipVer) {}
+    : client(nullptr), lego_ip(lego_ip),  SSL(SSL), ipVer(ipVer),host(host) {}
 Lego_Client::~Lego_Client() {}
 
 std::string Lego_Client::readResponse() {
@@ -69,8 +69,8 @@ std::string Lego_Client::readResponse() {
   std::string response;
   try {
     // Leer respuesta
-    int bytes;
-    while ((bytes = client->Read(buffer, sizeof(buffer))) > 0) {
+    ssize_t  bytes;
+    while ((bytes = static_cast<ssize_t>(client->Read(buffer, sizeof(buffer)))) > 0) {
       response.append(buffer, bytes);
     }
   } catch (const std::exception& e) {
@@ -166,7 +166,7 @@ void Lego_Client::cicloCliente() {
               // continue; // es esto o while
             }
             // std::vector<std::string> piezas_figura;
-
+            
             if (mitad == 1 || mitad == 2) {
               solicitarMediaFigura(figura, mitad);
 

@@ -52,6 +52,7 @@ SSLSocket::SSLSocket(bool IPv6) {
  *
  **/
 SSLSocket::SSLSocket(char* certFileName, char* keyFileName, bool IPv6) {
+  this->LoadCertificates(certFileName,keyFileName);
   this->Init('s', IPv6);
   const SSL_METHOD* method = TLS_server_method();
 
@@ -60,7 +61,7 @@ SSLSocket::SSLSocket(char* certFileName, char* keyFileName, bool IPv6) {
     throw std::runtime_error(
         "SSLSocket::SSLSocket( char *, char *, bool ) 1 ctx");
   }
-  this->Context = (void*)ctx;
+  this->Context = static_cast<void*>(ctx);
   // dios demasiado texto este server
   // if (SSL_CTX_use_PrivateKey_file(this->sslContext, keyFileName,
   // SSL_FILETYPE_PEM) <= 0) {
@@ -147,7 +148,28 @@ void SSLSocket::InitContext(bool serverContext) {
  *
  **/
 void SSLSocket::LoadCertificates(const char* certFileName,
-                                 const char* keyFileName) {}
+                                 const char* keyFileName) { SSL_CTX* ctx = static_cast<SSL_CTX*>(this->Context);
+
+  if (!ctx) {
+    throw std::runtime_error("LoadCertificates: SSL_CTX is null");
+  }
+
+  // 🔹 Cargar certificado
+  if (SSL_CTX_use_certificate_file(ctx, certFileName, SSL_FILETYPE_PEM) <= 0) {
+    throw std::runtime_error("LoadCertificates: error loading certificate");
+  }
+
+  // 🔹 Cargar clave privada
+  if (SSL_CTX_use_PrivateKey_file(ctx, keyFileName, SSL_FILETYPE_PEM) <= 0) {
+    throw std::runtime_error("LoadCertificates: error loading private key");
+  }
+
+  // 🔹 Verificar que la clave privada corresponde al certificado
+  if (!SSL_CTX_check_private_key(ctx)) {
+    throw std::runtime_error(
+        "LoadCertificates: private key does not match certificate");
+  }
+}
 
 /**
  *  Connect
