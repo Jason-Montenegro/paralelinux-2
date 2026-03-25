@@ -24,9 +24,10 @@ class Lego_Client {
   std::string buildHTTPRequest(const std::string& figura, int& mitad);
   std::string buildListRequest();
   std::string parseBody(const std::string& response);
+  std::string mostrarMenu();
   std::vector<std::string> parseList(const std::string& body);
   void parseFigures(const std::string& body);
-
+  
  public:
   Lego_Client(int ipVer = 4, int SSL = 0, const char* host = nullptr,
               const char* lego_ip = "127.0.0.1");

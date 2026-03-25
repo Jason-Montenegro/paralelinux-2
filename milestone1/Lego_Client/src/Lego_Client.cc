@@ -7,7 +7,7 @@
 #include <stdexcept>
 #include <string>
 #include <vector>
-
+#include <iomanip>
 #include "SSLSocket.h"
 #include "Socket.h"
 
@@ -104,24 +104,124 @@ std::string Lego_Client::solicitarLista() {
 // armar la figura no debe presentar elementos HTML en su presentación al
 // usuario.
 
-void Lego_Client::cicloCliente() {
-  std::string lista = solicitarLista();
-  std::cout << "lista solicitada :" << std::endl << std::endl;
-  // std::cout << lista << std::endl;
-  auto figuras_lista = parseList(lista);
-  for (const auto& f : figuras_lista) {
-    std::cout << f << std::endl;
-  }
-  std::string figura;
-  std::cin >> figura;
-  solicitarMediaFigura(figura, 1);
-  solicitarMediaFigura(figura, 2);
-  std::cout << ": " << this->lego_figuras.size() << std::endl;
-  for (const auto& par : lego_figuras) {
-    std::cout << par.first << " cantidad: " << par.second << std::endl;
-  }
+std::string Lego_Client::mostrarMenu(){
+  std::string menu = "\033[32m Bienvenido a el servidor de piezas \033[32m\n"
+          "1. \tVer lista de figuras\n"
+          "2. \tPedir figura (nombre y si quiere solo una mitad especifica cual)\n"
+          "0.\tSalir\n"
+          "Seleccione una opcion \n";
+  return menu;
+}
 
-  // close()
+
+// uso de colores "\033[0m" para blanco y "\033[31m" para verde en terminal.
+void Lego_Client::cicloCliente() {
+  int opcion = 1;
+  system("clear");                           //limpiar terminal
+  std::cout<<"\033[32m Bienvenido a el servidor de piezas\n"<<"\033[0m";
+  while (opcion) {
+    try {
+      
+      std::cout<<"\033[32m Seleccione accion a realizar:\n"<<"\033[0m"<<
+          "1. Ver lista de figuras\n"
+          "2. Pedir figura (digite el nombre y la mitad de la figura que desea)\n"
+          "0. Salir\n"
+          "Seleccione una opcion: \n";
+
+      if (!(std::cin >> opcion)) {
+        std::cin.clear();
+        std::cin.ignore(10000, '\n');
+        std::cout << "\033[31mEntrada invalida\n\033[31m"<<"\033[0m";
+        continue;
+      }
+      // std::cout << lista << std::endl;
+      if (opcion == 1) {
+        try {
+          std::string lista = solicitarLista();
+          std::cout << "\033[32m\nlista solicitada :" << "\033[0m" << std::endl;
+
+          int contador =1;
+          auto figuras_lista = parseList(lista);
+          for (const auto& f : figuras_lista) {
+            std::cout <<contador <<"|  "<< std::left << std::setw(30) << f << std::endl;
+            contador++;
+          }
+          std::cout << std::endl;
+        } catch (const std::exception& e) {
+          system("clear");
+          std::cerr << "\033[31m\nError al solicitar lista: " << e.what() << "\033[31m"<<"\033[0m"<< std::endl;
+        }
+      } else {
+        if (opcion == 2) {
+          try {
+            std::cout << "Figura: ";
+            std::string figura;
+            std::cin >> figura;
+            int mitad;
+            std::cout << "Ingrese la mitad (opcional): ";
+            if (!(std::cin >> mitad)) {
+              std::cin.clear();              // limpia error
+              std::cin.ignore(10000, '\n');  // limpia buffer
+              mitad = 3;                     // default = figura completa
+              // continue; // es esto o while
+            }
+            // std::vector<std::string> piezas_figura;
+
+            if (mitad == 1 || mitad == 2) {
+              solicitarMediaFigura(figura, mitad);
+
+            } else {
+              for (int i = 1; i <= 2; ++i) {
+                solicitarMediaFigura(figura, i);
+              }
+            }
+            if (this->lego_figuras.size()) {
+              std::cout << "\nCantidad de piezas totales";
+              if (mitad == 1 || mitad == 2) {
+                std::cout << "de la mitad" << mitad<< std::endl;
+              }
+              int i = 1;
+              for (const auto& par : lego_figuras) {
+                std::cout << i << "| " << std::left << std::setw(30) << par.first
+                << " cantidad: " << par.second << std::endl;
+                i++;
+              }
+              this->lego_figuras.clear();
+            } else {
+              system("clear");
+              std::cout << "\033[31m\nEl servidor no posee las piezas de la figura indicada :( \033[31m"<<std::endl;
+            }
+            std::cout << std::endl;
+          } catch (const std::exception& e) {
+            system("clear");
+            std::cerr << "\033[31m\nError al solicitar figura: " << e.what() << "\033[31m"<<std::endl;
+          }
+        } else {
+          if(opcion != 0){
+            system("clear");
+            std::cout << "\033[31m\nOpcion no existente, intente de nuevo!\033[31m" << std::endl;
+          }
+         
+        }
+
+        // std::cout << "URL Imagenes" << std::endl;
+        // las url de las imagenes que aun no ocupamos
+        //  for (const auto& f : set_figuras1) {
+        //    std::cout << f << std::endl;
+        //  }
+        //  for (const auto& f : set_figuras2) {
+        //    std::cout << f << std::endl;
+        //  }
+      }
+
+    } catch (const std::exception& e) {
+      std::cerr << "Error general: " << e.what() << std::endl;
+    } catch (...) {
+      std::cerr << "Error desconocido\n";
+    }
+  }
+  // ocupa interfaz de cout y cin para ver la lista y que el usuario responda
+  // close();
 }
 
 void Lego_Client::solicitarMediaFigura(const std::string& figura, int mitad) {
