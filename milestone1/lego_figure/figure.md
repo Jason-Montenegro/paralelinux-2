@@ -14,3 +14,13 @@ La figura de Lego es inspirada en un personaje del videojuego Among Us.
 ## Parte 2: visor
 
 - 6x brick 2x3 light blue
+
+## Representación ASCII
+
+```
+   .----.
+ .-|  |```|
+|  |  ``|``
+ \.|    |
+   |_||_|
+```
