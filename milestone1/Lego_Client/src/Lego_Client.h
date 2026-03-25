@@ -27,7 +27,9 @@ class Lego_Client {
   std::string mostrarMenu();
   std::vector<std::string> parseList(const std::string& body);
   void parseFigures(const std::string& body);
-  
+
+  /* Clase comprobacion mas adelante*/
+  bool validateEntry(std::string);
  public:
   Lego_Client(int ipVer = 4, int SSL = 0, const char* host = nullptr,
               const char* lego_ip = "127.0.0.1");
