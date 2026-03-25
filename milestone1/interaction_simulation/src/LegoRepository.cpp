@@ -37,7 +37,19 @@ const std::unordered_map
           {1, "brick 2x4 slope orange"},
         },
       }
-    }
+    },
+    {
+      "amogus", {
+        {  // Part 1
+          {4, "brick 1x2 red"},
+          {2, "brick 4x6 red"},
+          {2, "brick 2x4 red"},
+        },
+        {  // Part 2
+          {6, "brick 2x3 light blue"},
+        },
+      }
+    },
   }
 };
 
