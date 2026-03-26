@@ -111,6 +111,8 @@ class Lego_Client {
    */
   void parseFigures(const std::string& body);
 
+  /* Clase comprobacion mas adelante*/
+  bool validateEntry(std::string);
  public:
   /**
    * @brief Constructor del cliente Lego.
