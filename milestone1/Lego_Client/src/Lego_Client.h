@@ -40,7 +40,7 @@ class Lego_Client {
   /// @brief Version de IP (4 o 6).
   int ipVer;  // 4 o 6
   ///@brief Nombre del host del servidor, en caso de que se haga la coneccion
-  ///por nombre y no por ip.
+  /// por nombre y no por ip.
   const char* host;
 
   /**
@@ -113,6 +113,7 @@ class Lego_Client {
 
   /* Clase comprobacion mas adelante*/
   bool validateEntry(std::string);
+
  public:
   /**
    * @brief Constructor del cliente Lego.
@@ -151,6 +152,12 @@ class Lego_Client {
    * request al serividor de figuras)
    */
   void cicloCliente();
+  /**
+   * @brief En caso de que el cliente solicite una figura, se manejara en este
+   * metodo el proceso de recoleccion del nombre y mitad de la figura del
+   * cliente
+   */
+  void procesarFigura();
 };
 
 #endif

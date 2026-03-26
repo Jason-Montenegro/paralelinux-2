@@ -134,6 +134,7 @@ Piezas totales de la mitad 1 : 6
 ----
 
 El resultado se muestra sin contenido HTML, únicamente con la información relevante.
+En caso de que se quieran todas las piezas de la figura (ambas mitades), solo debe ingresar cualquier numero que no sea 1 o 2, se considera el caso predeterminado.
 
 == Manejo de errores
 
@@ -145,9 +146,3 @@ El cliente contempla:
 * Respuestas incompletas del servidor
 
 
-
-== Integrantes de Pararelinux2 
-
-*Ivan
-*Jafet
-*Jason
