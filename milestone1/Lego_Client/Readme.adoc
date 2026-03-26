@@ -1,0 +1,153 @@
+= Cliente Lego – Etapa 1
+:toc:
+:toclevels: 2
+
+== Descripción
+
+Para la primera etapa de este proyecto, se implementa un cliente HTTP/HTTPS en C++ capaz de comunicarse con un servidor de piezas Lego (host: os.ecci.ucr.ac.cr) para:
+
+* Obtener la lista de figuras disponibles
+* Solicitar las piezas necesarias para construir una figura en especifico
+* Mostrar el inventario de piezas sin contenido HTML
+
+El cliente interactúa con el servidor utilizando el protocolo HTTP (RFC 2616) sobre:
+
+* Puerto 80 (HTTP)
+* Puerto 443 (HTTPS)
+
+== Funcionamiento
+
+El cliente realiza las siguientes acciones:
+
+. Se  intenta conectar al servidor (os.ecci.ucr.ac.cr)
+. Envía una solicitud HTTP (GET)
+. Recibe una respuesta en formato HTML dependiendo de si solicito una figura o la lsita de figuras. en el primer caso extrae únicamente:
+** Nombre de la pieza
+** Cantidad requerida
+En el caso de pedir la lista de figuras, presenta la lista completa e figuras.
+. En ambos casos Presenta el resultado en consola sin etiquetas HTML
+
+== Características principales
+
+* Soporte para:
+** IPv4 / IPv6
+** HTTP y HTTPS (SSL)
+* Manejo básico de errores
+* Uso de expresiones regulares (std::regex) para procesar HTML
+* Interfaz interactiva en consola
+
+== Compilación
+
+[source,bash]
+----
+Si se desea compilar sin makefile:
+    g++ -o cliente main.cpp Lego_Client.cc Socket.cc SSLSocket.cc -lssl -lcrypto
+Caso contrario:
+    make
+----
+
+== Ejecución
+
+[source,bash]
+----
+./cliente 
+o ./bin/cliente en caso de haber compilado previamente en el makefile
+----
+
+== Argumentos opcionales
+
+=== Activar SSL (HTTPS)
+
+[source,bash]
+----
+./cliente +ssl
+----
+
+=== Usar IPv4
+
+[source,bash]
+----
+./cliente IPv4
+----
+
+=== Cambiar host
+
+[source,bash]
+----
+./cliente host:os.ecci.ucr.ac.cr
+----
+
+=== Especificar IP del host (ejemplo demostratico con IPv6)
+
+[source,bash]
+----
+./cliente fe80::8f5a:e2e1:7256:ffe3%enp0s31f6
+----
+
+=== Ejemplo completo
+
+[source,bash]
+----
+./cliente +ssl IPv4 host:os.ecci.ucr.ac.cr
+----
+
+== Uso del programa
+
+Al ejecutar el programa, se presenta el siguiente menú:
+
+[source]
+----
+Bienvenido a el servidor de piezas
+
+1. Ver lista de figuras
+2. Pedir figura
+0. Salir
+----
+
+=== Opción 1: Ver lista
+
+Muestra todas las figuras disponibles en el servidor.
+
+=== Opción 2: Pedir figura
+
+Se solicita:
+
+* Nombre de la figura
+* Mitad (opcional)
+
+Ejemplo:
+
+[source]
+----
+Figura: q
+Ingrese la mitad (opcional): 1
+----
+
+=== Resultado esperado
+
+[source]
+----
+Piezas totales de la mitad 1 : 6
+1| brick-2x2-blue           cantidad: 3
+2| brick-2x4-blue           cantidad: 2
+3| brick-2x4-red            cantidad: 1
+----
+
+El resultado se muestra sin contenido HTML, únicamente con la información relevante.
+
+== Manejo de errores
+
+El cliente contempla:
+
+* Entrada inválida del usuario
+* Figura inexistente
+* Problemas de conexión
+* Respuestas incompletas del servidor
+
+
+
+== Integrantes de Pararelinux2 
+
+*Ivan
+*Jafet
+*Jason

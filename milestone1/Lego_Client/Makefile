@@ -43,9 +43,11 @@ clean:
 
 help:
 	@echo "Available targets"
-	@echo "\tmake       		 : compiles the program"
-	@echo "\tmake run   		 : compiles and runs the program"
-	@echo "\tmake clean 		 : erase all compiled files"
-	@echo "\tmake help  		 : get this target list"
+	@echo "	make           : compiles the program"
+	@echo "	make run       : compiles and runs the program"
+	@echo "	make clean     : erase all compiled files"
+	@echo "	make build-ssl : build OpenSSL library"
+	@echo "	make usage     : print the way to run the program with the make"
+	@echo "	make help      : get this target list"
 
 .PHONY: all run clean help
