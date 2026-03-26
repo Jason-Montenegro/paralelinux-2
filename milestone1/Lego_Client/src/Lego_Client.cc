@@ -105,36 +105,33 @@ std::string Lego_Client::solicitarLista() {
 // usuario.
 
 std::string Lego_Client::mostrarMenu(){
-  std::string menu = "\033[32m Bienvenido a el servidor de piezas \033[32m\n"
-          "1. \tVer lista de figuras\n"
-          "2. \tPedir figura (nombre y si quiere solo una mitad especifica cual)\n"
-          "0.\tSalir\n"
-          "Seleccione una opcion \n";
+  std::string menu = "\033[32m Seleccione accion a realizar:\n\033[0m"
+          "1. Ver lista de figuras\n"
+          "2. Pedir figura (digite el nombre y la mitad de la figura que desea)\n"
+          "0. Salir\n";
+          
   return menu;
 }
-
 
 // uso de colores "\033[0m" para blanco y "\033[31m" para verde en terminal.
 void Lego_Client::cicloCliente() {
   int opcion = 1;
+  std::string respuesta;
   system("clear");                           //limpiar terminal
-  std::cout<<"\033[32m Bienvenido a el servidor de piezas\n"<<"\033[0m";
+  std::cout<<"\033[32m Bienvenido a el servidor de piezas\n\n"<<"\033[0m";
   while (opcion) {
     try {
-      
-      std::cout<<"\033[32m Seleccione accion a realizar:\n"<<"\033[0m"<<
+      do{
+        
+        std::cout<<"\033[32m Seleccione accion a realizar:\n\033[0m"
           "1. Ver lista de figuras\n"
           "2. Pedir figura (digite el nombre y la mitad de la figura que desea)\n"
           "0. Salir\n"
           "Seleccione una opcion: \n";
+        std::getline(std::cin, respuesta);
+      }while (!validateEntry(respuesta));
+      opcion = stoi(respuesta);
 
-      if (!(std::cin >> opcion)) {
-        std::cin.clear();
-        std::cin.ignore(10000, '\n');
-        std::cout << "\033[31mEntrada invalida\n\033[31m"<<"\033[0m";
-        continue;
-      }
-      // std::cout << lista << std::endl;
       if (opcion == 1) {
         try {
           std::string lista = solicitarLista();
@@ -157,15 +154,13 @@ void Lego_Client::cicloCliente() {
             std::cout << "Figura: ";
             std::string figura;
             std::cin >> figura;
+            std::cin.ignore(10000, '\n');
             int mitad;
-            std::cout << "Ingrese la mitad (opcional): ";
-            if (!(std::cin >> mitad)) {
-              std::cin.clear();              // limpia error
-              std::cin.ignore(10000, '\n');  // limpia buffer
-              mitad = 3;                     // default = figura completa
-              // continue; // es esto o while
-            }
-            // std::vector<std::string> piezas_figura;
+            do{
+              std::cout << "Ingrese la mitad (opcional): ";
+              std::getline(std::cin,respuesta);
+            }while(!validateEntry(respuesta));
+            mitad = std::stoi(respuesta);
             
             if (mitad == 1 || mitad == 2) {
               solicitarMediaFigura(figura, mitad);
@@ -176,16 +171,19 @@ void Lego_Client::cicloCliente() {
               }
             }
             if (this->lego_figuras.size()) {
-              std::cout << "\nCantidad de piezas totales";
+              std::cout << "\nCantidad de piezas totales\n";
               if (mitad == 1 || mitad == 2) {
-                std::cout << "de la mitad" << mitad<< std::endl;
+                std::cout << "de la mitad " << mitad<< std::endl;
               }
               int i = 1;
+              int conteo= 0;
               for (const auto& par : lego_figuras) {
                 std::cout << i << "| " << std::left << std::setw(30) << par.first
                 << " cantidad: " << par.second << std::endl;
+                conteo += par.second;
                 i++;
               }
+              std::cout<< "Total de piezas de la estructura: "<< conteo<<std::endl;
               this->lego_figuras.clear();
             } else {
               system("clear");
@@ -296,3 +294,20 @@ void Lego_Client::parseFigures(const std::string& body) {
   }
 }
 
+/// std::regex img_regex(R"(SRC="([^"]+)")");
+
+bool Lego_Client::validateEntry(std::string entry){
+  if(entry.empty()){
+    std::cin.clear();              // limpia error
+    //std::cin.ignore(10000, '\n');
+    std::cout << "\033[31m"<<"\nIngrese una respuesta NO vacia\n"<<"\033[0m" << std::endl;
+    return false;
+  }try{
+    int respuesta = std::stoi(entry);
+  }catch(const std::invalid_argument& e){
+    std::cout << "\033[31m"<<"\nIngrese un numero valido\n"<<"\033[0m" << std::endl;
+    return false;
+  }
+  
+  return true;
+}
