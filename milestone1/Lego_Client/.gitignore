@@ -1,0 +1,10 @@
+# Directorios 
+build/
+bin/
+
+# lo que tira el make
+*.o
+
+# Ejecutables
+*.out
+*.exe
