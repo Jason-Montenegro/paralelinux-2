@@ -1,45 +1,38 @@
 #include "Lego_Client.h"
 
 #include <cstring>
+#include <iomanip>
 #include <iostream>
 #include <map>
 #include <regex>
 #include <stdexcept>
 #include <string>
 #include <vector>
-#include <iomanip>
+
 #include "SSLSocket.h"
 #include "Socket.h"
 
-// no se si se quejara jason que es mejor un define o alguna vaina loca que
-
-//  
 static const char* HTTPS_PORT = "443";
 static const char* HTTP_PORT = "80";
 
-
 Lego_Client::Lego_Client(int ipVer, int SSL, const char* host,
                          const char* lego_ip)
-    : client(nullptr), lego_ip(lego_ip),  SSL(SSL), ipVer(ipVer),host(host) {
+    : client(nullptr), lego_ip(lego_ip), SSL(SSL), ipVer(ipVer), host(host) {}
 
-}
-
-Lego_Client::~Lego_Client() {
-
-}
+Lego_Client::~Lego_Client() {}
 
 // uso de colores "\033[0m" para blanco y "\033[31m" para verde en terminal.
 void Lego_Client::cicloCliente() {
   int opcion = 1;
   std::string respuesta;
-  system("clear");                           //limpiar terminal
-  std::cout<<"\033[32m Bienvenido a el servidor de piezas\n\n"<<"\033[0m";
+  system("clear");  // limpiar terminal
+  std::cout << "\033[32m Bienvenido a el servidor de piezas\n\n" << "\033[0m";
   while (opcion) {
     try {
-      do{
-        std::cout<<mostrarMenu();
+      do {
+        std::cout << mostrarMenu();
         std::getline(std::cin, respuesta);
-      }while (!validateEntry(respuesta));
+      } while (!validateEntry(respuesta));
       opcion = stoi(respuesta);
 
       if (opcion == 1) {
@@ -47,33 +40,36 @@ void Lego_Client::cicloCliente() {
           std::string lista = solicitarLista();
           std::cout << "\033[32m\nlista solicitada :" << "\033[0m" << std::endl;
 
-          int contador =1;
+          int contador = 1;
           auto figuras_lista = parseList(lista);
           for (const auto& f : figuras_lista) {
-            std::cout <<contador <<"|  "<< std::left << std::setw(30) << f << std::endl;
+            std::cout << contador << "|  " << std::left << std::setw(30) << f
+                      << std::endl;
             contador++;
           }
           std::cout << std::endl;
         } catch (const std::exception& e) {
           system("clear");
-          std::cerr << "\033[31m\nError al solicitar lista: " << e.what() << "\033[31m"<<"\033[0m"<< std::endl;
+          std::cerr << "\033[31m\nError al solicitar lista: " << e.what()
+                    << "\033[31m" << "\033[0m" << std::endl;
         }
       } else {
         if (opcion == 2) {
           try {
-          procesarFigura();
+            procesarFigura();
           } catch (const std::exception& e) {
             system("clear");
-            std::cerr << "\033[31m\nError al solicitar figura: " << e.what() << "\033[31m"<<std::endl;
+            std::cerr << "\033[31m\nError al solicitar figura: " << e.what()
+                      << "\033[31m" << std::endl;
           }
         } else {
-          if(opcion != 0){
+          if (opcion != 0) {
             system("clear");
-            std::cout << "\033[31m\nOpcion no existente, intente de nuevo!\033[31m" << std::endl;
+            std::cout
+                << "\033[31m\nOpcion no existente, intente de nuevo!\033[31m"
+                << std::endl;
           }
-         
         }
-
       }
 
     } catch (const std::exception& e) {
@@ -82,33 +78,36 @@ void Lego_Client::cicloCliente() {
       std::cerr << "Error desconocido\n";
     }
   }
-  // ocupa interfaz de cout y cin para ver la lista y que el usuario responda
   // close();
 }
 
-std::string Lego_Client::mostrarMenu(){
-  std::string menu = "\033[32m Seleccione accion a realizar:\n\033[0m"
-          "1. Ver lista de figuras\n"
-          "2. Pedir figura (digite el nombre y la mitad de la figura que desea)\n"
-          "0. Salir\n"
-          "Seleccione una opcion: \n";
-          
+std::string Lego_Client::mostrarMenu() {
+  std::string menu =
+      "\033[32m Seleccione accion a realizar:\n\033[0m"
+      "1. Ver lista de figuras\n"
+      "2. Pedir figura (digite el nombre y la mitad de la figura que desea)\n"
+      "0. Salir\n"
+      "Seleccione una opcion: \n";
+
   return menu;
 }
 
-bool Lego_Client::validateEntry(std::string entry){
-  if(entry.empty()){
-    std::cin.clear();              // limpia error
-    //std::cin.ignore(10000, '\n');
-    std::cout << "\033[31m"<<"\nIngrese una respuesta NO vacia\n"<<"\033[0m" << std::endl;
-    return false;
-  }try{
-    int respuesta = std::stoi(entry);
-  }catch(const std::invalid_argument& e){
-    std::cout << "\033[31m"<<"\nIngrese un numero valido\n"<<"\033[0m" << std::endl;
+bool Lego_Client::validateEntry(std::string entry) {
+  if (entry.empty()) {
+    std::cin.clear();  // limpia error
+    // std::cin.ignore(10000, '\n');
+    std::cout << "\033[31m" << "\nIngrese una respuesta NO vacia\n"
+              << "\033[0m" << std::endl;
     return false;
   }
-  
+  try {
+    int respuesta = std::stoi(entry);
+  } catch (const std::invalid_argument& e) {
+    std::cout << "\033[31m" << "\nIngrese un numero valido\n"
+              << "\033[0m" << std::endl;
+    return false;
+  }
+
   return true;
 }
 
@@ -147,8 +146,8 @@ void Lego_Client::procesarFigura() {
     int conteo = 0;
 
     for (const auto& par : lego_figuras) {
-      std::cout << i << "| " << std::left << std::setw(30)
-                << par.first << " cantidad: " << par.second << std::endl;
+      std::cout << i << "| " << std::left << std::setw(30) << par.first
+                << " cantidad: " << par.second << std::endl;
       conteo += par.second;
       i++;
     }
@@ -157,7 +156,8 @@ void Lego_Client::procesarFigura() {
 
   } else {
     system("clear");
-    std::cout << "\033[31m\nEl servidor no posee las piezas de la figura indicada :( \033[0m\n";
+    std::cout << "\033[31m\nEl servidor no posee las piezas de la figura "
+                 "indicada :( \033[0m\n";
   }
 
   std::cout << std::endl;
@@ -217,8 +217,9 @@ std::string Lego_Client::readResponse() {
   std::string response;
   try {
     // Leer respuesta
-    ssize_t  bytes;
-    while ((bytes = static_cast<ssize_t>(client->Read(buffer, sizeof(buffer)))) > 0) { // 
+    ssize_t bytes;
+    while ((bytes = static_cast<ssize_t>(
+                client->Read(buffer, sizeof(buffer)))) > 0) {  //
       response.append(buffer, bytes);
     }
   } catch (const std::exception& e) {
@@ -271,32 +272,52 @@ std::string Lego_Client::buildListRequest() {
 // servidor, no así las imágenes descriptivas. El detalle de las piezas para
 // armar la figura no debe presentar elementos HTML en su presentación al
 // usuario.
+
+
 // idea de Brandon Palacios usar Regex
-// Implementacion de ivan
+// Implementacion de ivan (version harcodeada)
+// std::vector<std::string> Lego_Client::parseList(const std::string& body) {
+//   std::cout<<body<<std::endl;
+//   std::regex regex_figuras(R"regex(<OPTION value="([^"]+)">)regex");
+//   std::vector<std::string> figuras;
+//   std::smatch match;
+//   std::string::const_iterator searchStart(body.cbegin());
+//   while (std::regex_search(searchStart, body.cend(), match, regex_figuras)) {
+//     std::string valor = match[1];
+
+//     if (valor != "None" && valor != "0" && valor != "1" && valor != "2") {
+//       figuras.push_back(valor);
+//     }
+
+//     searchStart = match.suffix().first;
+//   }
+
+//   return figuras;
+//}
+// (version mas descente)
 std::vector<std::string> Lego_Client::parseList(const std::string& body) {
-  std::regex regex_figuras(R"regex(<OPTION value="([^"]+)">)regex");
   std::vector<std::string> figuras;
-  std::smatch match;
-  std::string::const_iterator searchStart(body.cbegin());
-  while (std::regex_search(searchStart, body.cend(), match, regex_figuras)) {
-    std::string valor = match[1];
 
-    if (valor != "None" && valor != "0" && valor != "1" && valor != "2") {
-      figuras.push_back(valor);
+  size_t inicio = body.find("<SELECT");
+  size_t fin = body.find("</SELECT>"); // hardcodeado aun pero en menor medida
+  if (inicio != std::string::npos && fin != std::string::npos) {
+    std::regex regex_figuras(R"regex(<OPTION value="([^"]+)">)regex");
+    std::smatch m;
+    std::string bloque = body.substr(inicio, fin - inicio);
+
+    for (auto it = bloque.cbegin();
+         std::regex_search(it, bloque.cend(), m, regex_figuras);
+         it = m.suffix().first) {
+      if (m[1] != "None") figuras.push_back(m[1]);
     }
-
-    searchStart = match.suffix().first;
   }
 
   return figuras;
 }
 
-
 void Lego_Client::parseFigures(const std::string& body) {
-
   std::regex row_regex(
-    R"ROW(<TR><TD ALIGN=center>\s*(\d+)\s*</TD>[\s\S]*?SRC="([^"]+)")ROW"
-  );
+      R"ROW(<TR><TD ALIGN=center>\s*(\d+)\s*</TD>[\s\S]*?SRC="([^"]+)")ROW");
   std::smatch match;
   auto it = body.cbegin();
   while (std::regex_search(it, body.cend(), match, row_regex)) {
@@ -313,4 +334,3 @@ void Lego_Client::parseFigures(const std::string& body) {
 }
 
 /// std::regex img_regex(R"(SRC="([^"]+)")");
-
