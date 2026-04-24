@@ -10,6 +10,7 @@ extern std::atomic<int> nextId;
 struct Message{
     int id = 0;
     std::string body;
+    //std::string sourceIp;
     
     //espacio msj solicitud/request
     RequestType reqType = RequestType::STOP;

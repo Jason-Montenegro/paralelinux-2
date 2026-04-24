@@ -13,6 +13,8 @@ enum RequestType : uint8_t{
 
     //control
     STOP
+    //JOIN,
+    //HANDSHAKE
 
 };
 

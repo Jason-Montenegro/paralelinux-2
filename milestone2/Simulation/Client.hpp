@@ -18,16 +18,16 @@ class Client {
 private:
     ThreadQueue<Message>& clientToInter;
     ThreadQueue<Message>& interToClient;
- 
-    // bloquea hasta que Intermediary::signalToClient ponga ready=true
-    void waitOnIntermediary(Control& interControl) const;
- 
+
 public:
+
     Client(ThreadQueue<Message>& clientToInter,
            ThreadQueue<Message>& interToClient);
  
     // loop interactivo. Espera interControl antes de comenzar.
     void run(Control& interControl, std::mutex& coutMtx);
+    // bloquea hasta que Intermediary::signalToClient ponga ready=true
+    void waitOnIntermediary(Control& interControl) const;
 };
 
 

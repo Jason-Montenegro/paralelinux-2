@@ -1,0 +1,114 @@
+[CLIENTE] [24/04/2026 12:45] [SOLICITUD] main: iniciando sistema
+[SERVIDOR] [24/04/2026 12:45] [SOLICITUD] Server: en linea, esperando peticiones del Intermediario
+[INTERM] [24/04/2026 12:45] [SOLICITUD] Intermediario: servidor listo, iniciando tabla de rutas
+[INTERM] [24/04/2026 12:45] [ENRUTAMIENTO] Intermediario: enviando ASK_FIGURE ALL al servidor
+[SERVIDOR] [24/04/2026 12:45] [SOLICITUD] Server: solicitud recibida #0 tipo=ASK_FIGURE body="ALL"
+[SERVIDOR] [24/04/2026 12:45] [SOLICITUD] LegoManager: ASK_FIGURE ALL -> devolviendo catalogo.
+[SERVIDOR] [24/04/2026 12:45] [RESPUESTA] Server: respuesta #0 tipo=FIGURES_LIST
+[INTERM] [24/04/2026 12:45] [ENRUTAMIENTO] Intermediario: tabla de rutas inicializada con 4 figuras.
+[INTERM] [24/04/2026 12:45] [SOLICITUD] Intermediario: esperando solicitud de cliente
+[CLIENTE] [24/04/2026 12:45] [SOLICITUD] Cliente en linea, iniciando sesion interactiva.
+[CLIENTE] [24/04/2026 12:45] [SOLICITUD] Cliente envía solicitud tipo=LIST_FIGURES body=""
+[INTERM] [24/04/2026 12:45] [SOLICITUD] Intermediario: solicitud #1 tipo=LIST_FIGURES body=""
+[INTERM] [24/04/2026 12:45] [ENRUTAMIENTO] Intermediario: enviando ASK_FIGURE ALL al servidor
+[SERVIDOR] [24/04/2026 12:45] [SOLICITUD] Server: solicitud recibida #2 tipo=ASK_FIGURE body="ALL"
+[SERVIDOR] [24/04/2026 12:45] [SOLICITUD] LegoManager: ASK_FIGURE ALL -> devolviendo catalogo.
+[SERVIDOR] [24/04/2026 12:45] [RESPUESTA] Server: respuesta #2 tipo=FIGURES_LIST
+[INTERM] [24/04/2026 12:45] [ENRUTAMIENTO] Intermediario: tabla de rutas inicializada con 4 figuras.
+[INTERM] [24/04/2026 12:45] [ENRUTAMIENTO] Intermediario: LIST_FIGURES resolviendo localmente desde tabla de rutas
+[INTERM] [24/04/2026 12:45] [RESPUESTA] Intermediario: FIGURES_LIST enviada al cliente id= 1
+[CLIENTE] [24/04/2026 12:45] [RESPUESTA] Cliente recibió respuesta tipo=FIGURES_LIST id=1
+[CLIENTE] [24/04/2026 12:46] [SOLICITUD] Cliente envía solicitud tipo=GET_FIGURE body="Horse&1"
+[INTERM] [24/04/2026 12:46] [SOLICITUD] Intermediario: solicitud #3 tipo=GET_FIGURE body="Horse&1"
+[INTERM] [24/04/2026 12:46] [ENRUTAMIENTO] Intermediario: GET_FIGURE "Horse" segmento=1
+[INTERM] [24/04/2026 12:46] [ENRUTAMIENTO] Intermediario: reenviando ASK_FIGURE body="Horse&1"
+[SERVIDOR] [24/04/2026 12:46] [SOLICITUD] Server: solicitud recibida #3 tipo=ASK_FIGURE body="Horse&1"
+[SERVIDOR] [24/04/2026 12:46] [SOLICITUD] LegoManager: ASK_FIGURE "Horse" segmento=1
+[SERVIDOR] [24/04/2026 12:46] [RESPUESTA] LegoManager: FIGURE_FOUND para "Horse" segmento=1
+[SERVIDOR] [24/04/2026 12:46] [RESPUESTA] Server: respuesta #3 tipo=FIGURE_FOUND
+[INTERM] [24/04/2026 12:46] [RESPUESTA] Intermediario: RETURN_FIGURE "Horse" a cliente
+[CLIENTE] [24/04/2026 12:46] [RESPUESTA] Cliente recibió respuesta tipo=RETURN_FIGURE id=3
+[CLIENTE] [24/04/2026 12:46] [SOLICITUD] Cliente envía solicitud tipo=STOP body=""
+[CLIENTE] [24/04/2026 12:46] [SOLICITUD] Cliente envió STOP, cerrando hilo.
+[INTERM] [24/04/2026 12:46] [SOLICITUD] Intermediario: solicitud #5 tipo=STOP body=""
+[INTERM] [24/04/2026 12:46] [SOLICITUD] Intermediario: STOP recibido, propagando al servidor
+[SERVIDOR] [24/04/2026 12:46] [SOLICITUD] Server: solicitud recibida #6 tipo=STOP body=""
+[SERVIDOR] [24/04/2026 12:46] [SOLICITUD] Server: STOP recibido, cerrando
+[CLIENTE] [24/04/2026 12:46] [SOLICITUD] main: sistema cerrado correctamente
+[CLIENTE] [24/04/2026 15:19] [SOLICITUD] main: iniciando sistema
+[SERVIDOR] [24/04/2026 15:19] [SOLICITUD] Server: en linea, esperando peticiones del Intermediario
+[INTERM] [24/04/2026 15:19] [SOLICITUD] Intermediario: servidor listo, iniciando tabla de rutas
+[INTERM] [24/04/2026 15:19] [ENRUTAMIENTO] Intermediario: enviando ASK_FIGURE ALL al servidor
+[SERVIDOR] [24/04/2026 15:19] [SOLICITUD] Server: solicitud recibida #0 tipo=ASK_FIGURE body="ALL"
+[SERVIDOR] [24/04/2026 15:19] [SOLICITUD] LegoManager: ASK_FIGURE ALL -> devolviendo catalogo.
+[SERVIDOR] [24/04/2026 15:19] [RESPUESTA] Server: respuesta #0 tipo=FIGURES_LIST
+[INTERM] [24/04/2026 15:19] [ENRUTAMIENTO] Intermediario: tabla de rutas inicializada con 4 figuras.
+[INTERM] [24/04/2026 15:19] [SOLICITUD] Intermediario: esperando solicitud de cliente
+[CLIENTE] [24/04/2026 15:19] [SOLICITUD] Cliente en linea, iniciando sesion interactiva.
+[CLIENTE] [24/04/2026 15:22] [SOLICITUD] main: iniciando sistema
+[INTERM] [24/04/2026 15:22] [SOLICITUD] Intermediario: servidor listo, iniciando tabla de rutas
+[INTERM] [24/04/2026 15:22] [ENRUTAMIENTO] Intermediario: enviando ASK_FIGURE ALL al servidor
+[SERVIDOR] [24/04/2026 15:22] [SOLICITUD] Server: en linea, esperando peticiones del Intermediario
+[SERVIDOR] [24/04/2026 15:22] [SOLICITUD] Server: solicitud recibida #0 tipo=ASK_FIGURE body="ALL"
+[SERVIDOR] [24/04/2026 15:22] [SOLICITUD] LegoManager: ASK_FIGURE ALL -> devolviendo catalogo.
+[SERVIDOR] [24/04/2026 15:22] [RESPUESTA] Server: respuesta #0 tipo=FIGURES_LIST
+[INTERM] [24/04/2026 15:22] [ENRUTAMIENTO] Intermediario: tabla de rutas inicializada con 4 figuras.
+[INTERM] [24/04/2026 15:22] [SOLICITUD] Intermediario: esperando solicitud de cliente
+[CLIENTE] [24/04/2026 15:22] [SOLICITUD] Cliente en linea, iniciando sesion interactiva.
+[CLIENTE] [24/04/2026 15:22] [SOLICITUD] Cliente envía solicitud tipo=LIST_FIGURES body=""
+[INTERM] [24/04/2026 15:22] [SOLICITUD] Intermediario: solicitud #1 tipo=LIST_FIGURES body=""
+[INTERM] [24/04/2026 15:22] [ENRUTAMIENTO] Intermediario: enviando ASK_FIGURE ALL al servidor
+[SERVIDOR] [24/04/2026 15:22] [SOLICITUD] Server: solicitud recibida #2 tipo=ASK_FIGURE body="ALL"
+[SERVIDOR] [24/04/2026 15:22] [SOLICITUD] LegoManager: ASK_FIGURE ALL -> devolviendo catalogo.
+[SERVIDOR] [24/04/2026 15:22] [RESPUESTA] Server: respuesta #2 tipo=FIGURES_LIST
+[INTERM] [24/04/2026 15:22] [ENRUTAMIENTO] Intermediario: tabla de rutas inicializada con 4 figuras.
+[INTERM] [24/04/2026 15:22] [ENRUTAMIENTO] Intermediario: LIST_FIGURES resolviendo localmente desde tabla de rutas
+[INTERM] [24/04/2026 15:22] [RESPUESTA] Intermediario: FIGURES_LIST enviada al cliente id= 1
+[CLIENTE] [24/04/2026 15:22] [RESPUESTA] Cliente recibió respuesta tipo=FIGURES_LIST id=1
+[CLIENTE] [24/04/2026 15:22] [SOLICITUD] Cliente envía solicitud tipo=LIST_FIGURES body=""
+[INTERM] [24/04/2026 15:22] [SOLICITUD] Intermediario: solicitud #3 tipo=LIST_FIGURES body=""
+[INTERM] [24/04/2026 15:22] [ENRUTAMIENTO] Intermediario: enviando ASK_FIGURE ALL al servidor
+[SERVIDOR] [24/04/2026 15:22] [SOLICITUD] Server: solicitud recibida #4 tipo=ASK_FIGURE body="ALL"
+[SERVIDOR] [24/04/2026 15:22] [SOLICITUD] LegoManager: ASK_FIGURE ALL -> devolviendo catalogo.
+[SERVIDOR] [24/04/2026 15:22] [RESPUESTA] Server: respuesta #4 tipo=FIGURES_LIST
+[INTERM] [24/04/2026 15:22] [ENRUTAMIENTO] Intermediario: tabla de rutas inicializada con 4 figuras.
+[INTERM] [24/04/2026 15:22] [ENRUTAMIENTO] Intermediario: LIST_FIGURES resolviendo localmente desde tabla de rutas
+[INTERM] [24/04/2026 15:22] [RESPUESTA] Intermediario: FIGURES_LIST enviada al cliente id= 3
+[CLIENTE] [24/04/2026 15:22] [RESPUESTA] Cliente recibió respuesta tipo=FIGURES_LIST id=3
+[CLIENTE] [24/04/2026 15:22] [SOLICITUD] Cliente envía solicitud tipo=LIST_FIGURES body=""
+[INTERM] [24/04/2026 15:22] [SOLICITUD] Intermediario: solicitud #5 tipo=LIST_FIGURES body=""
+[INTERM] [24/04/2026 15:22] [ENRUTAMIENTO] Intermediario: enviando ASK_FIGURE ALL al servidor
+[SERVIDOR] [24/04/2026 15:22] [SOLICITUD] Server: solicitud recibida #6 tipo=ASK_FIGURE body="ALL"
+[SERVIDOR] [24/04/2026 15:22] [SOLICITUD] LegoManager: ASK_FIGURE ALL -> devolviendo catalogo.
+[SERVIDOR] [24/04/2026 15:22] [RESPUESTA] Server: respuesta #6 tipo=FIGURES_LIST
+[INTERM] [24/04/2026 15:22] [ENRUTAMIENTO] Intermediario: tabla de rutas inicializada con 4 figuras.
+[INTERM] [24/04/2026 15:22] [ENRUTAMIENTO] Intermediario: LIST_FIGURES resolviendo localmente desde tabla de rutas
+[INTERM] [24/04/2026 15:22] [RESPUESTA] Intermediario: FIGURES_LIST enviada al cliente id= 5
+[CLIENTE] [24/04/2026 15:22] [RESPUESTA] Cliente recibió respuesta tipo=FIGURES_LIST id=5
+[CLIENTE] [24/04/2026 15:22] [SOLICITUD] Cliente envía solicitud tipo=GET_FIGURE body="fish&2"
+[INTERM] [24/04/2026 15:22] [SOLICITUD] Intermediario: solicitud #7 tipo=GET_FIGURE body="fish&2"
+[INTERM] [24/04/2026 15:22] [ENRUTAMIENTO] Intermediario: GET_FIGURE "fish" segmento=2
+[INTERM] [24/04/2026 15:22] [ENRUTAMIENTO] Intermediario: reenviando ASK_FIGURE body="fish&2"
+[SERVIDOR] [24/04/2026 15:22] [SOLICITUD] Server: solicitud recibida #7 tipo=ASK_FIGURE body="fish&2"
+[SERVIDOR] [24/04/2026 15:22] [SOLICITUD] LegoManager: ASK_FIGURE "fish" segmento=2
+[SERVIDOR] [24/04/2026 15:22] [RESPUESTA] LegoManager: FIGURE_FOUND para "fish" segmento=2
+[SERVIDOR] [24/04/2026 15:22] [RESPUESTA] Server: respuesta #7 tipo=FIGURE_FOUND
+[INTERM] [24/04/2026 15:22] [RESPUESTA] Intermediario: RETURN_FIGURE "fish" a cliente
+[CLIENTE] [24/04/2026 15:22] [RESPUESTA] Cliente recibió respuesta tipo=RETURN_FIGURE id=7
+[CLIENTE] [24/04/2026 15:22] [SOLICITUD] Cliente envía solicitud tipo=LIST_FIGURES body=""
+[INTERM] [24/04/2026 15:22] [SOLICITUD] Intermediario: solicitud #9 tipo=LIST_FIGURES body=""
+[INTERM] [24/04/2026 15:22] [ENRUTAMIENTO] Intermediario: enviando ASK_FIGURE ALL al servidor
+[SERVIDOR] [24/04/2026 15:22] [SOLICITUD] Server: solicitud recibida #10 tipo=ASK_FIGURE body="ALL"
+[SERVIDOR] [24/04/2026 15:22] [SOLICITUD] LegoManager: ASK_FIGURE ALL -> devolviendo catalogo.
+[SERVIDOR] [24/04/2026 15:22] [RESPUESTA] Server: respuesta #10 tipo=FIGURES_LIST
+[INTERM] [24/04/2026 15:22] [ENRUTAMIENTO] Intermediario: tabla de rutas inicializada con 4 figuras.
+[INTERM] [24/04/2026 15:22] [ENRUTAMIENTO] Intermediario: LIST_FIGURES resolviendo localmente desde tabla de rutas
+[INTERM] [24/04/2026 15:22] [RESPUESTA] Intermediario: FIGURES_LIST enviada al cliente id= 9
+[CLIENTE] [24/04/2026 15:22] [RESPUESTA] Cliente recibió respuesta tipo=FIGURES_LIST id=9
+[CLIENTE] [24/04/2026 15:22] [SOLICITUD] Cliente envía solicitud tipo=STOP body=""
+[CLIENTE] [24/04/2026 15:22] [SOLICITUD] Cliente envió STOP, cerrando hilo.
+[INTERM] [24/04/2026 15:22] [SOLICITUD] Intermediario: solicitud #11 tipo=STOP body=""
+[INTERM] [24/04/2026 15:22] [SOLICITUD] Intermediario: STOP recibido, propagando al servidor
+[SERVIDOR] [24/04/2026 15:22] [SOLICITUD] Server: solicitud recibida #12 tipo=STOP body=""
+[SERVIDOR] [24/04/2026 15:22] [SOLICITUD] Server: STOP recibido, cerrando
+[CLIENTE] [24/04/2026 15:22] [SOLICITUD] main: sistema cerrado correctamente
