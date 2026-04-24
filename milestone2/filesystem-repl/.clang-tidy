@@ -1,0 +1,30 @@
+---
+Checks: >
+  clang-diagnostic-*,
+  bugprone-*,
+  modernize-*,
+  performance-*,
+  -bugprone-easily-swappable-parameters,
+  -modernize-use-trailing-return-type,
+  -clang-diagnostic-unused-result,
+  -performance-enum-size,
+  -modernize-use-nodiscard
+WarningsAsErrors: ''
+HeaderFileExtensions:
+
+- ''
+- h
+- hh
+- hpp
+- hxx
+ImplementationFileExtensions:
+- c
+- cc
+- cpp
+- cxx
+HeaderFilterRegex: '.*'
+ExcludeHeaderFilterRegex: ''
+FormatStyle:     file
+CheckOptions:    {}
+SystemHeaders:  false
+...
