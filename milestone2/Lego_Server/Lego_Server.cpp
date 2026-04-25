@@ -68,19 +68,7 @@ Lego_Server::Lego_Server(const char* host, const char* lego_ip,
       ezy_file(ezy_file) {
   initializeFileSystem(path);
   std::cout << "tiene disco disco" << std::endl;
-  populateFigure("/duck",
-                 "[1,brick 2x2 slope orange]"
-                 "[2,brick 2x3 yellow][2,brick 2x2 yellow]",
-                 "[2,brick 1x1 yellow eye]"
-                 "[1,brick 2x1 yellow][1,brick 2x4 slope orange]");
-  std::cout << "no llega aca" << std::endl;
-  populateFigure("/pablo",
-                 "[7,brick 6x6 slope red]"
-                 "[2,brick 2x3 yellow][2,brick 2x2 yellow]",
-                 "[2,brick 1x1 yellow eye]"
-                 "[1,brick 2x1 yellow][1,brick 2x4 slope orange]");
 
-  populateLogFile();
   if (queue_capacity < 1) {
     queue_capacity = COLITA;
   }
@@ -107,11 +95,10 @@ int Lego_Server::cicloServer() {
     server_socket_6 = new Socket('s', 1);
     server_socket_4_ssl =
         new SSLSocket((const char*)"cert0123.pem",  // cert0123.pem
-                      (const char*)"key0123.pem", false,true)
-    ;
+                      (const char*)"key0123.pem", false, true);
 
-    server_socket_6_ssl = new SSLSocket(
-        (const char*)"cert0123.pem", (const char*)"key0123.pem", true, true);
+    server_socket_6_ssl = new SSLSocket((const char*)"cert0123.pem",
+                                        (const char*)"key0123.pem", true, true);
     if (server_socket_4 == nullptr && server_socket_6 == nullptr &&
         server_socket_6_ssl == nullptr && server_socket_4_ssl == nullptr) {
       std::cerr << "Error: No se pudo crear socket del servidor" << std::endl;
@@ -119,10 +106,15 @@ int Lego_Server::cicloServer() {
     }
 
     // Bindea a la bicha
-    BindPortAvailable(server_socket_4, PORT4);
-    BindPortAvailable(server_socket_6, PORT6);
-    BindPortAvailable(server_socket_4_ssl, PORT4SSL);
-    BindPortAvailable(server_socket_6_ssl, PORT6SSL);
+
+    int p1 = BindPortAvailable(server_socket_4, PORT4);
+    int p2 = BindPortAvailable(server_socket_6, PORT6);
+    int p3 = BindPortAvailable(server_socket_4_ssl, PORT4SSL);
+    int p4 = BindPortAvailable(server_socket_6_ssl, PORT6SSL);
+    std::string puertos = "Servidor escuchando en puertos: ";
+    puertos += std::to_string(p1) + std::to_string(p2) + std::to_string(p3) +
+               std::to_string(p4);
+    registrarEvento(Entidad::SERVIDOR, TipoLog::ENRUTAMIENTO, puertos);
 
     // server_socket_4->Bind(PORT4);
     // server_socket_6->Bind(PORT6);
@@ -150,6 +142,8 @@ int Lego_Server::cicloServer() {
 
   } catch (const std::exception& e) {
     std::cerr << "Muerte del server " << e.what() << std::endl;
+    registrarEvento(Entidad::SERVIDOR, TipoLog::ERROR,
+                    "Fallo al iniciar servidor: " + std::string(e.what()));
     return 1;
   }
 
@@ -162,16 +156,19 @@ void Lego_Server::acceptLoop(VSocket* server, int ssl) {
   VSocket* client;
   for (;;) {
     try {
-      
       client = server->AcceptConnection();
-      std::cout<<"ya hay una nueva conexion"<<std::endl;
+      std::cout << "ya hay una nueva conexion" << std::endl;
       if (!client) {
-        std::cout<<"no lo logra>??"<<std::endl;
-        continue; // nullptr 
+        registrarEvento(Entidad::SERVIDOR, TipoLog::SOLICITUD,
+                        "Nueva conexion TCP establecida");
+        std::cout << "no lo logra>??" << std::endl;
+        continue;  // nullptr
       }
     } catch (const std::exception& e) {
-      std::cerr << "Fallo en procesar el tipo de socket, no es ni tcp ni udp  " << e.what()
-                << std::endl;
+      std::cerr << "Fallo en procesar el tipo de socket, no es ni tcp ni udp  "
+                << e.what() << std::endl;
+      registrarEvento(Entidad::SERVIDOR, TipoLog::ERROR,
+                      "Error en accept: " + std::string(e.what()));
       // Si el error es por falta de recursos, dormimos un poco para no saturar
       // el CPU
       std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -216,10 +213,13 @@ void Lego_Server::connectionHandling(VSocket* client) {
                  "confia en el certificado, en medio handshake"
               << std::endl;
     try {
-      sslClient
-          ->AcceptSSL();  // si falla hace thow de que el cliente es un llorno
+      sslClient->AcceptSSL();  // si falla hace
+      registrarEvento(Entidad::INTERM, TipoLog::ENRUTAMIENTO,
+                      "Handshake SSL completado con exito");
     } catch (const std::exception& e) {
       std::cerr << "Error de Handshake SSL" << e.what() << std::endl;
+      registrarEvento(Entidad::INTERM, TipoLog::ERROR,
+                      "Handshake SSL fallido: " + std::string(e.what()));
       client->Close();
       delete client;
       return;  // El hilo termina
@@ -245,6 +245,9 @@ void Lego_Server::connectionHandling(VSocket* client) {
     if (!bytesRead) {
       std::cout << "muere conexion" << std::endl;
       break;
+    } else {
+      registrarEvento(Entidad::CLIENTE, TipoLog::SOLICITUD,
+                      "Datos HTTP recibidos (Header)");
     }
     std::cout << "prueba" << std::endl;
     std::cout << stringData << std::endl;
@@ -294,25 +297,23 @@ void Lego_Server::connectionHandling(VSocket* client) {
       int mitad = 0;
       if (stringData.find("&lego/figure=") !=
           std::string::npos) {  /// lego/list.php?figure=
-        size_t figPos = stringData.find("figure=") + 7;
-        size_t figEnd = stringData.find("&", figPos);
-        if (figEnd == std::string::npos) figEnd = stringData.find(" ", figPos);
-        figure = stringData.substr(figPos, figEnd - figPos);
+        auto request = parseLegoRequest(stringData);
+        registrarEvento(Entidad::SERVIDOR, TipoLog::ENRUTAMIENTO,
+                        "Procesando GET para figura: " + request.first);
+        std::string fullPath =
+            "/" + request.first + "/" + std::to_string(request.second) + ".txt";
 
-        std::cout << "figura solicitada " << figure << std::endl;
-        std::string part = "1";
-        size_t partPos = stringData.find("part=");
-        if (partPos != std::string::npos) {
-          mitad = std::stoi(stringData.substr(partPos + 5, 1));
-        }
-        std::cout << "mitad solicitada " << mitad << std::endl;
-
-        std::string fullPath = "/" + figure + "/" + part + ".txt";
-        // figure += "/" + relative_path;
         auto contenido = ezy_file.readFromFile(fullPath);
         if (!contenido) {
+          registrarEvento(
+              Entidad::SERVIDOR, TipoLog::ERROR,
+              "404 - Pieza no encontrada en FileSystem: " + fullPath);
           // manejar error
           //   return contenido.error();
+        } else {
+          registrarEvento(Entidad::SERVIDOR, TipoLog::RESPUESTA,
+                          "Enviando pieza " + std::to_string(request.second) +
+                              " de " + request.first);
         }
         const auto& v = contenido.value();
         std::string str;
@@ -327,13 +328,23 @@ void Lego_Server::connectionHandling(VSocket* client) {
       } else {
         if (stringData.find("&logs=") != std::string::npos) {
           // modularizar con el de arriba
+          auto contenido = ezy_file.readFromFile("/logs.txt");
+          const auto& v = contenido.value();
+          std::string str;
+          str.reserve(v.size());
+
+          std::transform(
+              v.cbegin(), v.cend(), std::back_inserter(str), [](std::byte b) {
+                return static_cast<char>(std::to_integer<uint8_t>(b));
+              });  //
+          std::cout<<"todos los benditos logs"<<str;
+
         } else {
           if (stringData.find("GET / ") != std::string::npos) {
             stringData = datos.str();
             std::string response = "";
             std::cout << "entro a una pagina y quiere respuesta" << std::endl;
-            std::string html =
-                "aun no se que poner :)"<<std::endl;
+            std::string html = "aun no se que poner :)";
             response = build_HttpResponse(html.size(), "close", html);
             client->Write(response.c_str());
           }
@@ -342,50 +353,73 @@ void Lego_Server::connectionHandling(VSocket* client) {
     } else {
       if (stringData.find("POST") != std::string::npos) {
         // modularizar esta parte
-        if (stringData.find("&lego/figure=") !=
-            std::string::npos) {  /// lego/list.php?figure=
-          std::string length = "&lego/figure=";
-          std::string figure;
-          figure =
-              (stringData.substr(length.size(), stringData.length() - 1));  //
-          int mitad = 0;
-          if (stringData.find("&part=") != std::string::npos) {
-            std::string length = "&part=";
-            mitad = std::stoi(
-                stringData.substr(length.size(), stringData.length() - 1));
-          }
-          std::string relative_path;
-          if (mitad == 1) {
-            relative_path = "1";
-          } else {
-            if (mitad == 2) {  // sino manda toda
-              relative_path = "2";
-            }
-          }
-          std::string fullPath = "/" + figure + "/" + relative_path + ".txt";
-          std::string directory = "/" + figure;
-          auto result =
-              ezy_file.stat(directory);  // verifica que este el directorio o no
+        registrarEvento(Entidad::CLIENTE, TipoLog::SOLICITUD,
+                        "Intento de POST para nueva figura");
+        auto request = parseLegoRequest(stringData);
 
-          // if (result.has_value()) { // Si existe (puede ser archivo o
-          // directorio)
-
-          // } else {
-          if (result.error() == EzError::NOT_FOUND) {  // No existe
-            ezy_file.mkdir(directory);
-          }
-          // figure += "/" + relative_path;
-          // }
-          ezy_file.writeToFile(fullPath,
-                               body);  // escribe la estructura de guardadito
-        }
+        // std::string fullPath = "/" + request.first + "/" +
+        // std::to_string(request.second) + ".txt";
+        std::string directory = "/" + request.first;
+        // escribe la estructura de guardadito
+        populateFigure(directory, body, std::to_string(request.second));
+        // TODO (ivan)  hacer que el populate le retorne si lo logro  poner,
+        // aunque probablemente es de try por el throw
+        registrarEvento(Entidad::SERVIDOR, TipoLog::RESPUESTA,
+                        "POST procesado: figura guardada en disco");
       }
 
       // memset(buffer, 0, sizeof(buffer));
     }
   }
+  registrarEvento(Entidad::SERVIDOR, TipoLog::ENRUTAMIENTO,
+                  "Cerrando conexion con el cliente");
   client->Close();
   delete client;
+}
+
+std::pair<std::string, int> Lego_Server::parseLegoRequest(
+    const std::string& stringData) {
+  std::string figure = "";
+  int part = 1;
+  size_t figPos = stringData.find("figure=");
+  if (figPos != std::string::npos) {
+    figPos += 7;
+    size_t figEnd = stringData.find("&", figPos);
+    if (figEnd == std::string::npos) {
+      figEnd = stringData.find(" ", figPos);
+    }
+    if (figEnd != std::string::npos) {
+      figure = stringData.substr(figPos, figEnd - figPos);
+    }
+  }
+  std::cout << "figura solicitada " << figure << std::endl;
+
+  size_t partPos = stringData.find("part=");
+  if (partPos != std::string::npos) {
+    try {
+      // Extraemos solo un carácter después de "part="
+      part = std::stoi(stringData.substr(partPos + 5, 1));
+    } catch (...) {
+      part = 1;  //
+    }
+  }
+
+  return {figure, part};
+}
+
+void Lego_Server::registrarEvento(Entidad e, TipoLog t, const std::string& m) {
+  std::string nuevaLinea = logger.log(e, t, m);
+  std::string contenidoTotal = "";
+  auto resultado = ezy_file.readFromFile("/logs.txt");
+  if (resultado.has_value()) {
+    const auto& bytes = resultado.value();
+
+    contenidoTotal.assign(reinterpret_cast<const char*>(bytes.data()),
+                          bytes.size());
+  }
+  // 3. Concatenar y persistir
+  contenidoTotal += nuevaLinea + "\n";
+  ezy_file.writeToFile("/logs.txt", contenidoTotal);
 }
 
 std::string Lego_Server::build_HttpResponse(uint32_t length,
@@ -412,74 +446,91 @@ void Lego_Server::initializeFileSystem(std::string fsPath) {
   EXPECT_OR_ELSE(this->ezy_file.mount(fsPath), [&](const auto& err) {
     throw std::runtime_error(ez::errorToStr(err));
   })
-  // if (shouldPopulateFileSystem) {
-  //   this->populateFileSystem();
-  // }
+  if (shouldPopulateFileSystem) {
+    this->populateFileSystem();
+  }
 }
 
-// void Lego_Server::populateFileSystem() {
-//   this->populateAmogusFigure();
-//   this->populateDuckFigure();
-//   this->populateLogFile();
-//   /*
-//     the chosen format is arbitrarily chosen for parsing the content
-//     preview of fs:
+void Lego_Server::populateFileSystem() {
+  populateFigure("/duck",
+                 "[1,brick 2x2 slope orange]"
+                 "[2,brick 2x3 yellow][2,brick 2x2 yellow]",
+                 "1");
 
-//     logs.txt
-//     amogus/
-//       1.txt:
-//         "[4,brick 1x2 red][3,brick 4x6 red][4,brick 2x4 red]"
-//       2.txt:
-//         "[6,brick 2x3 light blue]"
-//     duck/
-//       1.txt:
-//         "[1,brick 2x2 slope orange][2,brick 2x3 yellow][2,brick 2x2 yellow]"
-//       2.txt:
-//         "[2,brick 1x1 yellow eye][1,brick 2x1 yellow][1,brick 2x4 slope
-//     orange]"
-//     */
-//}
+  populateFigure("/duck",
+                 "[2,brick 1x1 yellow eye]"
+                 "[1,brick 2x1 yellow][1,brick 2x4 slope orange]",
+                 "1");
 
-void Lego_Server::populateFigure(std::string directory, std::string figuras1,
-                                 std::string figuras2) {
-  std::cout << "Intentando crear directorio: " << directory << std::endl;
-  auto res_dir = this->ezy_file.mkdir(directory);
-  if (!res_dir.has_value()) {
-    std::cout << "Aviso mkdir: " << ez::errorToStr(res_dir.error())
-              << std::endl;
-    // Si el error es ALREADY_EXISTS, podemos seguir
+  populateFigure("/pablo",
+                 "[7,brick 6x6 slope red]"
+                 "[2,brick 2x3 yellow][2,brick 2x2 yellow]",
+                 "1");
+  populateFigure("/pablo",
+                 "[2,brick 1x1 yellow eye]"
+                 "[1,brick 2x1 yellow][1,brick 2x4 slope orange]",
+                 "2");
+
+  populateLogFile();
+  /*
+    the chosen format is arbitrarily chosen for parsing the content
+    preview of fs:
+
+    logs.txt
+    amogus/
+      1.txt:
+        "[4,brick 1x2 red][3,brick 4x6 red][4,brick 2x4 red]"
+      2.txt:
+        "[6,brick 2x3 light blue]"
+    duck/
+      1.txt:
+        "[1,brick 2x2 slope orange][2,brick 2x3 yellow][2,brick 2x2 yellow]"
+      2.txt:
+        "[2,brick 1x1 yellow eye][1,brick 2x1 yellow][1,brick 2x4 slope
+    orange]"
+    */
+}
+
+void Lego_Server::populateFigure(std::string directory, std::string figuras,
+                                 std::string mitad) {
+  auto result =
+      ezy_file.stat(directory);  // verifica que este el directorio o no
+
+  if (result.error() == EzError::NOT_FOUND) {  // No existe
+    auto res_dir = ezy_file.mkdir(directory);
   }
-
-  std::string p1 = directory + "/1.txt";
+  std::string p1 = directory + "/" + mitad + ".txt";
   std::cout << "Intentando escribir: " << p1 << std::endl;
-  auto res_w = this->ezy_file.writeToFile(p1, figuras1);
+  auto res_w = this->ezy_file.writeToFile(p1, figuras);
 
   if (!res_w.has_value()) {
-    // AQUÍ ES DONDE ESTÁ DANDO EL NOT_FOUND
     std::cout << "Fallo fatal en: " << p1
               << " Error: " << ez::errorToStr(res_w.error()) << std::endl;
-    throw std::runtime_error(ez::errorToStr(res_w.error()));
+    throw std::runtime_error(
+        ez::errorToStr(res_w.error()));  // una pereza hacer catch de esto
   }
 }
 
-void Lego_Server::populateDuckFigure() {
-  EXPECT_OR_ELSE(this->ezy_file.mkdir("duck"), [&](const auto& err) {
-    throw std::runtime_error(ez::errorToStr(err));
-  })
+// void Lego_Server::populateDuckFigure() {
+//   EXPECT_OR_ELSE(this->ezy_file.mkdir("duck"), [&](const auto& err) {
+//     throw std::runtime_error(ez::errorToStr(err));
+//   })
 
-  EXPECT_OR_ELSE(
-      this->ezy_file.writeToFile("1.txt",
-                                 "[1,brick 2x2 slope orange]"
-                                 "[2,brick 2x3 yellow][2,brick 2x2 yellow]"),
-      [&](const auto& err) { throw std::runtime_error(ez::errorToStr(err)); })
+//   EXPECT_OR_ELSE(
+//       this->ezy_file.writeToFile("1.txt",
+//                                  "[1,brick 2x2 slope orange]"
+//                                  "[2,brick 2x3 yellow][2,brick 2x2 yellow]"),
+//       [&](const auto& err) { throw std::runtime_error(ez::errorToStr(err));
+//       })
 
-  EXPECT_OR_ELSE(
-      this->ezy_file.writeToFile(
-          "2.txt",
-          "[2,brick 1x1 yellow eye]"
-          "[1,brick 2x1 yellow][1,brick 2x4 slope orange]"),
-      [&](const auto& err) { throw std::runtime_error(ez::errorToStr(err)); })
-}
+//   EXPECT_OR_ELSE(
+//       this->ezy_file.writeToFile(
+//           "2.txt",
+//           "[2,brick 1x1 yellow eye]"
+//           "[1,brick 2x1 yellow][1,brick 2x4 slope orange]"),
+//       [&](const auto& err) { throw std::runtime_error(ez::errorToStr(err));
+//       })
+// }
 
 void Lego_Server::populateLogFile() {  // el root tendra figuras
   EXPECT_OR_ELSE(
