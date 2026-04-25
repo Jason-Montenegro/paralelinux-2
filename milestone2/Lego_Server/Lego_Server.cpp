@@ -8,6 +8,7 @@
 #include <cstring>
 #include <iostream>
 #include <memory>
+#include <mutex>
 #include <string>
 #include <thread>
 #include <vector>
@@ -82,7 +83,15 @@ Lego_Server::~Lego_Server() {
   }
 }
 
+void Lego_Server::handleSignal(int signal) {
+  if (signal == SIGINT) {
+    // Lego_Server::stopFlag = true;
+    std::cout << " Cerrando Ivan Server" << std::endl;
+  }
+}
+
 int Lego_Server::cicloServer() {
+  std::signal(SIGINT, Lego_Server::handleSignal);
   VSocket* server_socket_4 = nullptr;
   VSocket* server_socket_6 = nullptr;
   VSocket* server_socket_4_ssl = nullptr;
@@ -111,9 +120,9 @@ int Lego_Server::cicloServer() {
     int p2 = BindPortAvailable(server_socket_6, PORT6);
     int p3 = BindPortAvailable(server_socket_4_ssl, PORT4SSL);
     int p4 = BindPortAvailable(server_socket_6_ssl, PORT6SSL);
-    std::string puertos = "Servidor escuchando en puertos: ";
-    puertos += std::to_string(p1) + std::to_string(p2) + std::to_string(p3) +
-               std::to_string(p4);
+    std::string puertos = "Servidor escuchando en puertos: ";  // aja
+    puertos += std::to_string(p1) + ", " + std::to_string(p2) + ", " +
+               std::to_string(p3) + ", " + std::to_string(p4);
     registrarEvento(Entidad::SERVIDOR, TipoLog::ENRUTAMIENTO, puertos);
 
     // server_socket_4->Bind(PORT4);
@@ -125,20 +134,49 @@ int Lego_Server::cicloServer() {
     server_socket_6->MarkPassive(queue_capacity);
     server_socket_4_ssl->MarkPassive(queue_capacity);
     server_socket_6_ssl->MarkPassive(queue_capacity);
-    std::vector<std::thread> threads;
 
-    threads.emplace_back(&Lego_Server::acceptLoop, this, server_socket_4, 0);
-    threads.emplace_back(&Lego_Server::acceptLoop, this, server_socket_6, 0);
-    threads.emplace_back(&Lego_Server::acceptLoop, this, server_socket_4_ssl,
-                         1);
-    threads.emplace_back(&Lego_Server::acceptLoop, this, server_socket_6_ssl,
-                         1);
+    server_socket_4->SetTimeout(30);
+    server_socket_6->SetTimeout(30);
+    server_socket_4_ssl->SetTimeout(30);
+    server_socket_6_ssl->SetTimeout(30);
+    // std::stop_token stop_token;
 
-    for (auto& thread : threads) {
-      if (thread.joinable()) {
-        thread.join();
-      }
+    threads.emplace_back([this, server_socket_4](std::stop_token st) {
+      this->acceptLoop(st, server_socket_4, 0);
+    });
+
+    threads.emplace_back([this, server_socket_6](std::stop_token st) {
+      this->acceptLoop(st, server_socket_6, 0);
+    });
+
+    threads.emplace_back([this, server_socket_4_ssl](std::stop_token st) {
+      this->acceptLoop(st, server_socket_4_ssl, 1);
+    });
+
+    threads.emplace_back([this, server_socket_6_ssl](std::stop_token st) {
+      this->acceptLoop(st, server_socket_6_ssl, 1);
+    });
+
+    // threads.emplace_back(&Lego_Server::acceptLoop, this, server_socket_4, 0);
+    // threads.emplace_back(&Lego_Server::acceptLoop, this, server_socket_6, 0);
+    // threads.emplace_back(&Lego_Server::acceptLoop, this, server_socket_4_ssl,
+    //                      1);
+    // threads.emplace_back(&Lego_Server::acceptLoop, this, server_socket_6_ssl,
+    //                      1);
+    pause();
+
+    for (auto& t : threads) {
+      t.request_stop();
     }
+    server_socket_4->Close();
+    server_socket_6->Close();
+    server_socket_4_ssl->Close();
+    server_socket_6_ssl->Close();
+
+    for (auto& t : threads) {
+      t.join();
+    }
+
 
   } catch (const std::exception& e) {
     std::cerr << "Muerte del server " << e.what() << std::endl;
@@ -150,30 +188,36 @@ int Lego_Server::cicloServer() {
   return EXIT_SUCCESS;
 }
 
-void Lego_Server::acceptLoop(VSocket* server, int ssl) {
-  std::vector<std::thread*> workers;
+void Lego_Server::acceptLoop(std::stop_token st, VSocket* server, int ssl) {
+  std::vector<std::jthread> workers;
   std::thread* worker;
   VSocket* client;
-  for (;;) {
+  while (!st.stop_requested()) {
     try {
       client = server->AcceptConnection();
-      std::cout << "ya hay una nueva conexion" << std::endl;
       if (!client) {
-        registrarEvento(Entidad::SERVIDOR, TipoLog::SOLICITUD,
-                        "Nueva conexion TCP establecida");
-        std::cout << "no lo logra>??" << std::endl;
+        // std::cout << "no lo logra>??" << std::endl;
         continue;  // nullptr
       }
     } catch (const std::exception& e) {
-      std::cerr << "Fallo en procesar el tipo de socket, no es ni tcp ni udp  "
-                << e.what() << std::endl;
-      registrarEvento(Entidad::SERVIDOR, TipoLog::ERROR,
-                      "Error en accept: " + std::string(e.what()));
-      // Si el error es por falta de recursos, dormimos un poco para no saturar
-      // el CPU
-      std::this_thread::sleep_for(std::chrono::milliseconds(100));
+      if (errno == EAGAIN || errno == EWOULDBLOCK) {
+        //   std::cerr << "Fallo en procesar el tipo de socket, no es ni tcp ni
+        //   udp  "
+        //           << e.what() << std::endl;
+        // registrarEvento(Entidad::SERVIDOR, TipoLog::ERROR,
+        //                 "Error en accept: " + std::string(e.what()));
+
+        // std::this_thread::sleep_for(std::chrono::milliseconds(100));
+      }
+
       continue;
     }
+    std::cout << "ya hay una nueva conexion" << std::endl;
+
+    registrarEvento(Entidad::SERVIDOR, TipoLog::SOLICITUD,
+                    "Nueva conexion TCP establecida");
+    // std::erase_if(workers, [](const std::jthread& t) { return !t.joinable();
+    // });
     if (ssl) {
       SSLSocket* sslClient = dynamic_cast<SSLSocket*>(client);
       SSLSocket* sslServer = dynamic_cast<SSLSocket*>(server);
@@ -181,13 +225,20 @@ void Lego_Server::acceptLoop(VSocket* server, int ssl) {
         sslClient->Copy(sslServer);
       }
     }
-    worker = new std::thread(&Lego_Server::connectionHandling, this, client);
-    workers.push_back(worker);
+    workers.emplace_back(
+        [this, client](std::stop_token st) { connectionHandling(st, client); });
+    // worker = new std::thread(&Lego_Server::connectionHandling, this, client);
+    // workers.push_back(worker);
+    // auto it = workers.begin();
+    // for (auto& t : workers) {
+    //   if (t.joinable()) t.join();
+    // }
     // std::thread(task, client);
   }
-  // for (auto& thread : threads) {
-  // if (thread && thread->joinable()) {
-  //   thread->join();
+  std::cout << "porque se cierra?" << std::endl;
+  // for (auto& thread : workers) {
+  // if ( thread.joinable()) {
+  //   thread.join();
   // }}
 }
 
@@ -205,7 +256,7 @@ int Lego_Server::BindPortAvailable(VSocket* socket, int startPort) {
   throw std::runtime_error("Sin puertos disponibles.");
 }
 
-void Lego_Server::connectionHandling(VSocket* client) {
+void Lego_Server::connectionHandling(std::stop_token st, VSocket* client) {
   SSLSocket* sslClient = dynamic_cast<SSLSocket*>(client);
   if (sslClient) {
     // esta en
@@ -227,40 +278,68 @@ void Lego_Server::connectionHandling(VSocket* client) {
   }
   std::cout << "manejando conexiones" << std::endl;
   // char buffer[1024]{};
-  char bufferin;
-  std::stringstream datos;
-  std::string stringData;
+
   int bytesRead = 0;
-  while (true) {
-    while (bytesRead = client->Read(&bufferin, 1)) {
-      datos << bufferin;
-      if (bufferin == '\n') {
-        stringData = datos.str();
-        if (stringData.find("\r\n\r\n") != std::string::npos) {
-          // foundSeparator = true;
-          break;
+  int keep_alive = 1;
+  std::string connectionType;
+  while (keep_alive && !st.stop_requested()) {
+    char bufferin;
+    std::stringstream datos;
+    std::string stringData;
+    try {
+      while ((bytesRead = client->Read(
+                  &bufferin, 1))) {  // si es igual a menos -1 que demonios hago
+        if (bytesRead != -1) {
+          datos << bufferin;
+          if (bufferin == '\n') {
+            stringData = datos.str();
+            if (stringData.find("\r\n\r\n") != std::string::npos) {
+              // foundSeparator = true;
+              break;
+            }
+          }
+        } else {  // -1 revisar
+          if (st.stop_requested()) {
+            client->Close();
+            delete client;
+            return;  // El hilo termina
+          }
         }
+      }
+    } catch (...) {
+      if (errno != EAGAIN && errno != EWOULDBLOCK) {
+        client->Close();
+        delete client;
+        return;  // El hilo termina
       }
     }
     if (!bytesRead) {
       std::cout << "muere conexion" << std::endl;
-      break;
+      // break;
+      client->Close();
+      delete client;
+      return;
     } else {
       registrarEvento(Entidad::CLIENTE, TipoLog::SOLICITUD,
                       "Datos HTTP recibidos (Header)");
     }
     std::cout << "prueba" << std::endl;
     std::cout << stringData << std::endl;
+
+    if (!HTTPver(stringData, "1.1")) {
+      registrarEvento(Entidad::SERVIDOR, TipoLog::ERROR,
+                      "100 - no hay soporte HTTP 1.0");
+      std::string response =
+          build_HttpResponse("400 Bad Request", badReq.size(), "text/html",
+                             connectionType, badReq);
+      client->Write(response.c_str());
+      break;
+    }
     std::stringstream body_s;
     std::string body = "";
 
     int bodySize = 0;
-    int pos = stringData.find("Content-Length: ");
-    if (pos != std::string::npos) {
-      uint32_t start = pos + 16;
-      uint32_t end = stringData.find("\r\n", start);
-      bodySize = std::stoi(stringData.substr(start, end - start));
-    }
+    int pos = 0;
 
     if (pos = stringData.find("Content-Length: ") != std::string::npos) {
       int bodySize = 0;
@@ -283,6 +362,11 @@ void Lego_Server::connectionHandling(VSocket* client) {
         body = body_s.str();
       }
     }
+    connectionType = "keep-alive";
+    if (stringData.find("Connection: close") != std::string::npos) {
+      connectionType = "close";
+      keep_alive = 0;
+    }
 
     //   return "GET /lego/list.php?figure=" + figura +
     //  "&part=" + std::to_string(mitad) +
@@ -302,33 +386,26 @@ void Lego_Server::connectionHandling(VSocket* client) {
                         "Procesando GET para figura: " + request.first);
         std::string fullPath =
             "/" + request.first + "/" + std::to_string(request.second) + ".txt";
-
+        this->ezy_mutex.lock();
         auto contenido = ezy_file.readFromFile(fullPath);
+        this->ezy_mutex.unlock();
         if (!contenido) {
+          std::cout << "figura no existente" << std::endl;
+          std::string response =
+              build_HttpResponse("404 Not Found", errorBody.size(), "text/html",
+                                 connectionType, errorBody);
+          client->Write(response.c_str());  // mismo cliente se pudre todo
           registrarEvento(
               Entidad::SERVIDOR, TipoLog::ERROR,
               "404 - Pieza no encontrada en FileSystem: " + fullPath);
-          // manejar error
-          //   return contenido.error();
+          // return;
+          //  manejar error
+          //    return contenido.error();
         } else {
           registrarEvento(Entidad::SERVIDOR, TipoLog::RESPUESTA,
                           "Enviando pieza " + std::to_string(request.second) +
                               " de " + request.first);
-        }
-        const auto& v = contenido.value();
-        std::string str;
-        str.reserve(v.size());
-
-        std::transform(v.cbegin(), v.cend(), std::back_inserter(str),
-                       [](std::byte b) {
-                         return static_cast<char>(std::to_integer<uint8_t>(b));
-                       });  //
-        std::string response = build_HttpResponse(str.size(), "close", str);
-        client->Write(response.c_str());  // enviadito
-      } else {
-        if (stringData.find("&logs=") != std::string::npos) {
-          // modularizar con el de arriba
-          auto contenido = ezy_file.readFromFile("/logs.txt");
+          std::cout << "llega al casteo" << std::endl;
           const auto& v = contenido.value();
           std::string str;
           str.reserve(v.size());
@@ -337,16 +414,77 @@ void Lego_Server::connectionHandling(VSocket* client) {
               v.cbegin(), v.cend(), std::back_inserter(str), [](std::byte b) {
                 return static_cast<char>(std::to_integer<uint8_t>(b));
               });  //
-          std::cout<<"todos los benditos logs"<<str;
+          std::cout << "casteocorrecto" << std::endl;
+          std::string body_html = buildFigurePage(request.first, str);
+          std::string response =
+              build_HttpResponse("200 OK", body_html.size(), "text/html",
+                                 connectionType, body_html);
+          //  std::cout << "envio respuesta" << response << std::endl;
+          client->Write(response.c_str());  // enviadito
+        }
+      } else {
+        if (stringData.find("&logs=") != std::string::npos) {
+          // modularizar con el de arriba
+          this->ezy_mutex.lock();
+          auto contenido = ezy_file.readFromFile("/logs.txt");
+          this->ezy_mutex.unlock();
+          const auto& v = contenido.value();
+          std::string str;
+          str.reserve(v.size());
+
+          std::transform(
+              v.cbegin(), v.cend(), std::back_inserter(str), [](std::byte b) {
+                return static_cast<char>(std::to_integer<uint8_t>(b));
+              });  //
+          std::cout << "todos los benditos logs" << str;
+          std::stringstream ss(str);
+          std::string line;
+          std::string filasHtml = "";
+          while (std::getline(ss, line)) {
+            if (!line.empty()) {
+              filasHtml += "<tr><td>INFO</td><td>" + line + "</td></tr>";
+            }
+          }
+          std::string htmlFinal = LOG_TEMPLATE;  // Copiamos la plantilla
+          std::string placeholder = "{{logContent}}";
+          size_t pos = htmlFinal.find(placeholder);
+          if (pos != std::string::npos) {
+            htmlFinal.replace(pos, placeholder.length(), filasHtml);
+          }
+          std::string response =
+              build_HttpResponse("200 OK", htmlFinal.size(), "text/html",
+                                 connectionType, htmlFinal);
+          client->Write(response.c_str());
 
         } else {
-          if (stringData.find("GET / ") != std::string::npos) {
+          if (stringData.find("GET / ") != std::string::npos ||
+              stringData.find("&list/figures") != std::string::npos) {
             stringData = datos.str();
             std::string response = "";
             std::cout << "entro a una pagina y quiere respuesta" << std::endl;
-            std::string html = "aun no se que poner :)";
-            response = build_HttpResponse(html.size(), "close", html);
-            client->Write(response.c_str());
+            this->ezy_mutex.lock();
+            auto res = ezy_file.listEntries("/");
+            this->ezy_mutex.unlock();
+
+            if (res.has_value()) {
+              std::string filasFiguras = "";
+              for (const auto& entry : res.value()) {
+                if (entry.type == InodeType::DIRECTORY) {
+                  if (entry.name != "." && entry.name != "..") {
+                    filasFiguras += "<tr>";
+                    filasFiguras += "  <td>" + entry.name + "</td>";
+                    // filasFiguras +=
+                    //     "  <td>Disponible</td>";
+                    filasFiguras += "</tr><br>";
+                  }
+                }
+              }
+              response =
+                  build_HttpResponse("200 OK", filasFiguras.size(), "text/html",
+                                     connectionType, filasFiguras);
+              client->Write(response.c_str());
+            }
+            // std::string html = "aun no se que poner :)";
           }
         }
       }
@@ -361,7 +499,9 @@ void Lego_Server::connectionHandling(VSocket* client) {
         // std::to_string(request.second) + ".txt";
         std::string directory = "/" + request.first;
         // escribe la estructura de guardadito
+        this->ezy_mutex.lock();
         populateFigure(directory, body, std::to_string(request.second));
+        this->ezy_mutex.unlock();
         // TODO (ivan)  hacer que el populate le retorne si lo logro  poner,
         // aunque probablemente es de try por el throw
         registrarEvento(Entidad::SERVIDOR, TipoLog::RESPUESTA,
@@ -375,6 +515,48 @@ void Lego_Server::connectionHandling(VSocket* client) {
                   "Cerrando conexion con el cliente");
   client->Close();
   delete client;
+}
+
+std::string Lego_Server::buildFigurePage(const std::string& figureName,
+                                         std::string content) {
+  std::cout << "llega al build" << std::endl;
+  std::string liElements = "<ul>\n";
+  int totalPieces = 0;
+
+  size_t pos = 0;
+  size_t endPos = 0;
+  while ((pos = content.find('[', pos)) != std::string::npos &&
+         (endPos = content.find(']', pos)) != std::string::npos) {
+    std::string entry = content.substr(pos + 1, endPos - pos - 1);
+    size_t commaPos = entry.find(',');
+    if (commaPos != std::string::npos) {
+      std::string cantStr = entry.substr(0, commaPos);
+      std::string nameStr = entry.substr(commaPos + 1);
+
+      totalPieces += std::stoi(cantStr);
+      liElements +=
+          "    <li><strong>" + cantStr + "x</strong> " + nameStr + "</li>\n";
+    }
+    pos = endPos + 1;
+  }
+  liElements += "  </ul>";
+
+  std::string html = FIGURES_TEMPLATE;
+
+  replace(html, "{{figureName}}", figureName);
+  replace(html, "{{figurePartList}}", liElements);
+  replace(html, "{{totalPieceQuantity}}",
+          "Cantidad Total: " + std::to_string(totalPieces));
+
+  return html;
+}
+void Lego_Server::replace(std::string& target, const std::string& placeholder,
+                          const std::string& value) {
+  size_t pos = 0;
+  while ((pos = target.find(placeholder, pos)) != std::string::npos) {
+    target.replace(pos, placeholder.length(), value);
+    pos += value.length();
+  }
 }
 
 std::pair<std::string, int> Lego_Server::parseLegoRequest(
@@ -397,17 +579,17 @@ std::pair<std::string, int> Lego_Server::parseLegoRequest(
   size_t partPos = stringData.find("part=");
   if (partPos != std::string::npos) {
     try {
-      // Extraemos solo un carácter después de "part="
       part = std::stoi(stringData.substr(partPos + 5, 1));
     } catch (...) {
       part = 1;  //
     }
   }
-
+  std::cout << "  parte soliciutada" << part << std::endl;
   return {figure, part};
 }
 
 void Lego_Server::registrarEvento(Entidad e, TipoLog t, const std::string& m) {
+  this->ezy_mutex.lock();
   std::string nuevaLinea = logger.log(e, t, m);
   std::string contenidoTotal = "";
   auto resultado = ezy_file.readFromFile("/logs.txt");
@@ -420,18 +602,32 @@ void Lego_Server::registrarEvento(Entidad e, TipoLog t, const std::string& m) {
   // 3. Concatenar y persistir
   contenidoTotal += nuevaLinea + "\n";
   ezy_file.writeToFile("/logs.txt", contenidoTotal);
+  this->ezy_mutex.unlock();
 }
 
-std::string Lego_Server::build_HttpResponse(uint32_t length,
-                                            std::string type_conect,
-                                            std::string& content) {
-  return "HTTP/1.1 200 OK\r\n"
-         "Content-Type: text/plain\r\n"
-         "Content-Length: " +
-         std::to_string(length) +
-         "\r\n"
-         "Connection: " +
-         type_conect + "\r\n\r\n" + content;
+std::string Lego_Server::build_HttpResponse(
+    const std::string statusCode,  // "200 OK", "404 Not Found", etc.
+    uint32_t length, std::string contentType, std::string type_conect,
+    std::string& content) {
+  return "HTTP/1.1 " + statusCode + "\r\n" + "Content-Type: " + contentType +
+         "; charset=UTF-8\r\n" + "Content-Length: " + std::to_string(length) +
+         "\r\n" + "Connection: " + type_conect + "\r\n" + "\r\n" + content;
+}
+
+int Lego_Server::HTTPver(const std::string& stringData,
+                         const std::string& versionEsperada) {
+  std::size_t endOfFirstLine = stringData.find("\r\n");
+  int retorno = 0;
+  if (endOfFirstLine != std::string::npos) {
+    std::string firstLine = stringData.substr(0, endOfFirstLine);
+
+    std::size_t httpPos = firstLine.find("HTTP/");
+    if (httpPos != std::string::npos) {
+      std::string versionEncontrada = firstLine.substr(httpPos + 5);
+      retorno = (versionEncontrada == versionEsperada);
+    }
+  }
+  return retorno;
 }
 
 void Lego_Server::initializeFileSystem(std::string fsPath) {
@@ -460,7 +656,7 @@ void Lego_Server::populateFileSystem() {
   populateFigure("/duck",
                  "[2,brick 1x1 yellow eye]"
                  "[1,brick 2x1 yellow][1,brick 2x4 slope orange]",
-                 "1");
+                 "2");
 
   populateFigure("/pablo",
                  "[7,brick 6x6 slope red]"

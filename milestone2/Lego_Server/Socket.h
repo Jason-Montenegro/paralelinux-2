@@ -23,7 +23,7 @@ class Socket : public VSocket {
       ~Socket();
       int Connect( const char *, int );
       int Connect( const char *, const char * );
-      size_t Read( void *, size_t );
+      ssize_t Read( void *, size_t );
       size_t Write( const void *, size_t );
       size_t Write( const char * );
      VSocket * AcceptConnection();  

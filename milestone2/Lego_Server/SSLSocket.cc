@@ -65,7 +65,7 @@ SSLSocket::SSLSocket(bool IPv6, bool contx) {
  *  @param     bool IPv6: if we need a IPv6 socket
  *
  **/
-SSLSocket::SSLSocket(char* certFileName, char* keyFileName, bool IPv6,
+SSLSocket::SSLSocket(const char* certFileName, const char* keyFileName, bool IPv6,
                      bool contx)
     : SSLSocket(IPv6, contx) {
   this->LoadCertificates(certFileName, keyFileName);
@@ -230,13 +230,9 @@ int SSLSocket::Connect(const char* host, const char* service) {
  *  Reads data from secure channel
  *
  **/
-size_t SSLSocket::Read(void* buffer, size_t size) {  // donde demonios saco
-  int st = -1;
+ssize_t SSLSocket::Read(void* buffer, size_t size) {  // donde demonios saco
+  ssize_t st = -1;
   st = SSL_read((SSL*)this->BIO, buffer, size);
-  if (-1 == st) {
-    throw std::runtime_error("SSLSocket::Read( void *, size_t ) st");
-  }
-
   return st;
 }
 
@@ -285,8 +281,14 @@ size_t SSLSocket::Write(const void* buffer, size_t size) {
 }
 
 VSocket* SSLSocket::AcceptConnection() {
-  int new_id = this->WaitForConnection();  // O WaitForConnection()
-  if (new_id < 0) return nullptr;
+  int new_id = -1;
+  try {
+   new_id = this->WaitForConnection();  // O WaitForConnection()
+  } catch (const std::exception& e)  {
+    return nullptr;
+  }
+
+  if (new_id < 0) return nullptr;// no deberia de pasar
   //SOCK_STREAM
    SSLSocket* peer;
   try{

@@ -21,14 +21,14 @@ class SSLSocket : public VSocket {
 
    public:
       SSLSocket( bool IPv6 = false ,bool = false );				// Not possible to create with UDP, client constructor
-      SSLSocket( char *, char *, bool = false ,bool = false);		// For server connections
+      SSLSocket( const char *, const char *, bool = false ,bool = false);		// For server connections
       SSLSocket( int,bool=false);
       ~SSLSocket();
       int Connect( const char *, int );
       int Connect( const char *, const char * );
       size_t Write( const char * );
       size_t Write( const void *, size_t );
-      size_t Read( void *, size_t );
+      ssize_t Read( void *, size_t );
       void ShowCerts();
       const char * GetCipher();
        //VSocket* AcceptConnection(){return nullptr;}

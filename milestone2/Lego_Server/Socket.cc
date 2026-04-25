@@ -83,16 +83,17 @@ int Socket::Connect(const char* host, const char* service) {
  * @param      int size: buffer capacity, read will stop if buffer is full
  *
  **/
-size_t Socket::Read(void* buffer, size_t size) {
-  //  ssize_t read(int fd, void buf[.count], size_t count);
-
+ssize_t Socket::Read(void* buffer, size_t size) {
   ssize_t st = read(this->idSocket, buffer, size);
+  
   if (-1 == st) {
-    throw std::runtime_error(std::string("Socket::Read( void *, size_t ) ") +
-                             strerror(errno));
+    if (errno != EAGAIN && errno != EWOULDBLOCK && errno != EINTR) {
+     throw std::runtime_error(std::string("Socket::Read(void,size_t): paso algo ") + strerror(errno));
+    }
+    
   }
 
-  return static_cast<size_t>(st);
+  return st;
 }
 
 /**
@@ -144,12 +145,17 @@ size_t Socket::Write(const char* text) {
  *
  **/
 VSocket* Socket::AcceptConnection() {
-  int id;
-  VSocket* peer;
+    int new_id = -1;
+  try {
+   new_id = this->WaitForConnection();  // O WaitForConnection()
+  } catch (const std::exception& e)  {
+    return nullptr;
+  }
 
-  id = this->WaitForConnection();
-  
-  peer = new Socket(id,this->IPv6);
-   //peer->type = this->type;
+  if (new_id < 0) return nullptr;// no deberia de pasar
+
+  VSocket* peer = new Socket(new_id, this->IPv6);
+
+
   return peer;
 }
