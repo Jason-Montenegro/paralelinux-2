@@ -26,6 +26,7 @@ VSocket::VSocket() : idSocket(-1), IPv6(false) {}
 VSocket::VSocket(int idSocket, bool IPv6) : idSocket(idSocket), IPv6(IPv6) {
   this->idSocket = idSocket;
   this->IPv6 = IPv6;
+  this->type = 's';
 
   if (this->idSocket == -1) {
     throw std::runtime_error(
@@ -82,6 +83,22 @@ void VSocket::Close() {
   if (this->idSocket != -1) {
     close(this->idSocket);
     this->idSocket = -1;
+  }
+}
+
+void VSocket::SetTimeout(int seconds, int useconds) {
+  struct timeval tv;
+  tv.tv_sec = seconds;
+  tv.tv_usec = useconds;
+
+  if (setsockopt(this->idSocket, SOL_SOCKET, SO_RCVTIMEO,
+                 &tv, sizeof(tv)) < 0) {
+    throw std::runtime_error("Error setting receive timeout");
+  }
+
+  if (setsockopt(this->idSocket, SOL_SOCKET, SO_SNDTIMEO,
+                 &tv, sizeof(tv)) < 0) {
+    throw std::runtime_error("Error setting send timeout");
   }
 }
 
