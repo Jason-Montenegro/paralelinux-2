@@ -1,0 +1,25 @@
+[INTERM] [25/04/2026 15:31] [SOLICITUD] Intermediario: servidor listo, iniciando tabla de rutas
+[INTERM] [25/04/2026 15:31] [ENRUTAMIENTO] Intermediario: enviando ASK_FIGURE ALL al servidor
+[INTERM] [25/04/2026 15:37] [SOLICITUD] Intermediario: servidor listo, iniciando tabla de rutas
+[INTERM] [25/04/2026 15:37] [ENRUTAMIENTO] Intermediario: enviando ASK_FIGURE ALL al servidor
+[INTERM] [25/04/2026 15:37] [ENRUTAMIENTO] Intermediario: tabla de rutas inicializada con 4 figuras.
+[INTERM] [25/04/2026 15:37] [SOLICITUD] Intermediario: esperando solicitud de cliente
+[CLIENTE] [25/04/2026 15:37] [SOLICITUD] Cliente en linea, iniciando sesion interactiva.
+[CLIENTE] [25/04/2026 15:37] [SOLICITUD] Cliente envia solicitud tipo=LIST_FIGURES figura=""
+[INTERM] [25/04/2026 15:37] [SOLICITUD] Intermediario: solicitud #1 tipo=LIST_FIGURES figura=""
+[INTERM] [25/04/2026 15:37] [ENRUTAMIENTO] Intermediario: enviando ASK_FIGURE ALL al servidor
+[INTERM] [25/04/2026 15:37] [ENRUTAMIENTO] Intermediario: tabla de rutas inicializada con 4 figuras.
+[INTERM] [25/04/2026 15:37] [ENRUTAMIENTO] Intermediario: LIST_FIGURES resolviendo localmente
+[INTERM] [25/04/2026 15:37] [RESPUESTA] Intermediario: FIGURES_LIST enviada al cliente id=1
+[CLIENTE] [25/04/2026 15:37] [RESPUESTA] Cliente recibio respuesta tipo=FIGURES_LIST id=1
+[CLIENTE] [25/04/2026 15:37] [SOLICITUD] Cliente envia solicitud tipo=GET_FIGURE figura="horse"
+[INTERM] [25/04/2026 15:37] [SOLICITUD] Intermediario: solicitud #3 tipo=GET_FIGURE figura="horse"
+[INTERM] [25/04/2026 15:37] [ENRUTAMIENTO] Intermediario: GET_FIGURE "horse" segmento=1
+[INTERM] [25/04/2026 15:37] [RESPUESTA] Intermediario: "horse" no esta en tabla de rutas -> FIGURE_NOT_FOUND
+[CLIENTE] [25/04/2026 15:37] [RESPUESTA] Cliente recibio respuesta tipo=FIGURE_NOT_FOUND id=3
+[CLIENTE] [25/04/2026 15:37] [SOLICITUD] Cliente envia solicitud tipo=GET_FIGURE figura="Horse"
+[INTERM] [25/04/2026 15:37] [SOLICITUD] Intermediario: solicitud #4 tipo=GET_FIGURE figura="Horse"
+[INTERM] [25/04/2026 15:37] [ENRUTAMIENTO] Intermediario: GET_FIGURE "Horse" segmento=2
+[INTERM] [25/04/2026 15:37] [ENRUTAMIENTO] Intermediario: reenviando ASK_FIGURE "Horse"
+[INTERM] [25/04/2026 15:37] [RESPUESTA] Intermediario: RETURN_FIGURE "Horse" a cliente
+[CLIENTE] [25/04/2026 15:37] [RESPUESTA] Cliente recibio respuesta tipo=RETURN_FIGURE id=4
