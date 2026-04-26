@@ -28,13 +28,13 @@ class Lego_Server {
  public:
   /**
    * @brief Constructor del servidor
-   * @param host nombre del host
-   * @param lego_ip ip del host
+   * @param key nombre del key
+   * @param cert ip del key
    * @param queue_capacity size de backlog de conexiones
    * @param fs Referencia al sistema de archivos
    * @param path Ruta donde montar/formatear FS
    */
-  Lego_Server(const char* host, const char* lego_ip, int queue_capacity,
+  Lego_Server(const char* key, const char* cert, int queue_capacity,
               ez::FileSystem& fs, std::string path);
 
   /**
@@ -60,14 +60,17 @@ class Lego_Server {
   void populateFileSystem();
 
  private:
+   ///@brief key del servidor
+  const char * key;    
+  ///
+  const char * cert;
   ///@brief Sockets servidor
   VSocket* server_socket_4;
   VSocket* server_socket_6;
   /// @brief las que lleven ssl ocupan certificado (aparentemente por cada ip)
   VSocket* server_socket_4_ssl;
   VSocket* server_socket_6_ssl;
-  ///@brief Host del servidor
-  std::string host;    
+
    ///@brief Backlog de conexiones
   int queue_capacity; 
   /**

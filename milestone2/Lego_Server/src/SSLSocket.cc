@@ -75,11 +75,14 @@ SSLSocket::SSLSocket(const char* certFileName, const char* keyFileName,
  **/
 SSLSocket::~SSLSocket() {
   // SSL destroy
+    if (nullptr != this->BIO) {
+    SSL_free(reinterpret_cast<SSL*>(this->BIO));
+    this->BIO = nullptr;
+  }
+
   if (nullptr != this->Context) {
     SSL_CTX_free(reinterpret_cast<SSL_CTX*>(this->Context));
-  }
-  if (nullptr != this->BIO) {
-    SSL_free(reinterpret_cast<SSL*>(this->BIO));
+    this->Context = nullptr;
   }
 
   this->Close();

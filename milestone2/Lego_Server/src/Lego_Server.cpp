@@ -61,10 +61,10 @@ int PORT6 = 9503;
 int COLITA = 5;
 uint32_t DEFAULT_DECISIONS_INODE = 1;
 
-Lego_Server::Lego_Server(const char* host, const char* lego_ip,
+Lego_Server::Lego_Server(const char* key, const char* cert,
                          int queue_capacity, ez::FileSystem& ezy_file,
                          std::string path)
-    : host(host), queue_capacity(queue_capacity), ezy_file(ezy_file) {
+    :key(key),cert(cert), queue_capacity(queue_capacity), ezy_file(ezy_file) {
   this->server_socket_4 = nullptr;
   this->server_socket_6 = nullptr;
   this->server_socket_4_ssl = nullptr;
@@ -120,11 +120,11 @@ void Lego_Server::inicializar_Server() {
   this->server_socket_4 = new Socket('s', 0);
   this->server_socket_6 = new Socket('s', 1);
   this->server_socket_4_ssl =
-      new SSLSocket((const char*)"cert0123.pem",  // cert0123.pem
-                    (const char*)"key0123.pem", false, true);
+      new SSLSocket((const char*)cert,  // cert0123.pem
+                    (const char*)key, false, true);
 
   this->server_socket_6_ssl = new SSLSocket(
-      (const char*)"cert0123.pem", (const char*)"key0123.pem", true, true);
+      (const char*)cert, (const char*)key, true, true);
   if (server_socket_4 == nullptr && server_socket_6 == nullptr &&
       server_socket_6_ssl == nullptr && server_socket_4_ssl == nullptr) {
     //  std::cerr << "Error: No se pudo crear socket del servidor" << std::endl;
