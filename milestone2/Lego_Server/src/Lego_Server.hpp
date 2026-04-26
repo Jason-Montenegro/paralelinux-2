@@ -37,8 +37,12 @@ class Lego_Server {
   void populateFileSystem();
 
  private:
-  std::atomic<bool> stopFlag = false;
-  VSocket* server_socket = nullptr;
+  VSocket* server_socket_4 ;
+  VSocket* server_socket_6 ;
+  VSocket* server_socket_4_ssl ;
+  VSocket* server_socket_6_ssl ;
+  //std::atomic<bool> stopFlag ;
+  VSocket* server_socket ;
   std::string host;
   int ipVer;
   int queue_capacity;
@@ -51,10 +55,18 @@ class Lego_Server {
   std::string badReq =
       "<h1>400 Bad Request</h1><p>Este servidor requiere HTTP/1.1</p>";
   // FileSystem ezy_file;
-
+  
+  void inicializar_Server();
+  void bindServer();
+  void listen();
+  void cierreServers();
   static void handleSignal(int signal);
   void acceptLoop(std::stop_token stop_token, VSocket* server, int);
   void connectionHandling(std::stop_token stop_token, VSocket* client);
+  int readHeaders(VSocket* client, std::stringstream& datos,
+                std::string& stringData, std::stop_token& st) ;
+  int readBody(std::stringstream& body_s, 
+                          std::string& stringData,VSocket * client,std::stop_token& st);              
   std::string build_HttpResponse(std::string, uint32_t length,
                                  std::string type_conect,
                                  std::string contentType, std::string& content);
@@ -70,7 +82,10 @@ class Lego_Server {
                const std::string& value);
   std::string buildFigurePage(
       const std::string& figureName,
-      std::string content);  // std::stop_token stop_token
+      std::string content);  // std::stop_token stop_token'
+
+
+
   const std::string LOG_TEMPLATE = R"HTML(
 <!DOCTYPE html>
 <html lang="en">
