@@ -22,7 +22,7 @@ class SSLSocket : public VSocket {
    public:
       SSLSocket( bool IPv6 = false ,bool = false );				// Not possible to create with UDP, client constructor
       SSLSocket( const char *, const char *, bool = false ,bool = false);		// For server connections
-      SSLSocket( int,bool=false);
+      SSLSocket( int,bool = false);
       ~SSLSocket();
       int Connect( const char *, int );
       int Connect( const char *, const char * );

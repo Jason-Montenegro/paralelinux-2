@@ -64,10 +64,7 @@ uint32_t DEFAULT_DECISIONS_INODE = 1;
 Lego_Server::Lego_Server(const char* host, const char* lego_ip,
                          int queue_capacity, ez::FileSystem& ezy_file,
                          std::string path)
-    : ipVer(ipVer),
-      host(host),
-      queue_capacity(queue_capacity),
-      ezy_file(ezy_file) {
+    : host(host), queue_capacity(queue_capacity), ezy_file(ezy_file) {
   this->server_socket_4 = nullptr;
   this->server_socket_6 = nullptr;
   this->server_socket_4_ssl = nullptr;
@@ -81,9 +78,7 @@ Lego_Server::Lego_Server(const char* host, const char* lego_ip,
   std::cout << "termina de montar disco" << std::endl;
 }
 
-Lego_Server::~Lego_Server() {
-  threads.clear(); 
-}
+Lego_Server::~Lego_Server() { threads.clear(); }
 
 void Lego_Server::handleSignal(int signal) {
   if (signal == SIGINT) {
@@ -106,11 +101,11 @@ int Lego_Server::cicloServer() {
     for (auto& t : threads) {  // esparce la condicion de parada
       t.request_stop();
     }
-   
+
     for (auto& t : threads) {
       t.join();
     }
-     cierreServers();
+    cierreServers();
   } catch (const std::exception& e) {
     std::cerr << "Muerte del server " << e.what() << std::endl;
     registrarEvento(Entidad::SERVIDOR, TipoLog::ERROR,
@@ -128,8 +123,8 @@ void Lego_Server::inicializar_Server() {
       new SSLSocket((const char*)"cert0123.pem",  // cert0123.pem
                     (const char*)"key0123.pem", false, true);
 
-  this->server_socket_6_ssl = new SSLSocket((const char*)"cert0123.pem",
-                                      (const char*)"key0123.pem", true, true);
+  this->server_socket_6_ssl = new SSLSocket(
+      (const char*)"cert0123.pem", (const char*)"key0123.pem", true, true);
   if (server_socket_4 == nullptr && server_socket_6 == nullptr &&
       server_socket_6_ssl == nullptr && server_socket_4_ssl == nullptr) {
     //  std::cerr << "Error: No se pudo crear socket del servidor" << std::endl;
@@ -177,61 +172,51 @@ int Lego_Server::BindPortAvailable(VSocket* socket, int startPort) {
 
 void Lego_Server::listen() {
   threads.emplace_back([this](std::stop_token st) {
-    this->acceptLoop(st, this->server_socket_4, 0);
+    this->acceptLoop(st, this->server_socket_4);
   });
 
   threads.emplace_back([this](std::stop_token st) {
-    this->acceptLoop(st, this->server_socket_6, 0);
+    this->acceptLoop(st, this->server_socket_6);
   });
 
   threads.emplace_back([this](std::stop_token st) {
-    this->acceptLoop(st, this->server_socket_4_ssl, 1);
+    this->acceptLoop(st, this->server_socket_4_ssl);
   });
 
   threads.emplace_back([this](std::stop_token st) {
-    this->acceptLoop(st, this->server_socket_6_ssl, 1);
+    this->acceptLoop(st, this->server_socket_6_ssl);
   });
 }
 
-void  Lego_Server::cierreServers() {
-  if(server_socket_4){
+void Lego_Server::cierreServers() {
+  if (server_socket_4) {
     this->server_socket_4->Close();
-     delete this->server_socket_4;
+    delete this->server_socket_4;
   }
-  
-   if(server_socket_6){
-      this->server_socket_6->Close();
-       delete this->server_socket_6;
+
+  if (server_socket_6) {
+    this->server_socket_6->Close();
+    delete this->server_socket_6;
   }
-   if(server_socket_4_ssl){ //
+  if (server_socket_4_ssl) {  //
     this->server_socket_4_ssl->Close();
     delete this->server_socket_4_ssl;
   }
-  if(server_socket_6_ssl){
-     this->server_socket_6_ssl->Close();
-     delete this->server_socket_6_ssl;
-  }  
+  if (server_socket_6_ssl) {
+    this->server_socket_6_ssl->Close();
+    delete this->server_socket_6_ssl;
+  }
 }
-void Lego_Server::acceptLoop(std::stop_token st, VSocket* server, int ssl) {
+void Lego_Server::acceptLoop(std::stop_token st, VSocket* server) {
   std::vector<std::jthread> workers;
-  std::thread* worker;
-  // VSocket* client = nullptr;
   while (!st.stop_requested()) {
     VSocket* client = nullptr;
     try {
       client = server->AcceptConnection();
       if (client) {
         std::cout << "ya hay una nueva conexion" << std::endl;
-
         registrarEvento(Entidad::SERVIDOR, TipoLog::SOLICITUD,
                         "Nueva conexion TCP establecida");
-        if (ssl) {
-          SSLSocket* sslClient = dynamic_cast<SSLSocket*>(client);
-          SSLSocket* sslServer = dynamic_cast<SSLSocket*>(server);
-          if (sslClient && sslServer) {
-            sslClient->Copy(sslServer);
-          }
-        }
         workers.emplace_back([this, client](std::stop_token st) {
           connectionHandling(st, client);
         });
@@ -267,8 +252,6 @@ void Lego_Server::connectionHandling(std::stop_token st, VSocket* client) {
   }
   std::cout << "manejando conexiones" << std::endl;
   // char buffer[1024]{};
-
-  int bytesRead = 0;
   int keep_alive = 1;
   std::string connectionType;
   while (keep_alive && !st.stop_requested()) {
@@ -295,7 +278,7 @@ void Lego_Server::connectionHandling(std::stop_token st, VSocket* client) {
     std::stringstream body_s;
     std::string body = "";
 
-    readBody(body_s, stringData,client,st);
+    readBody(body_s, stringData, client, st);
     body = body_s.str();
     connectionType = "keep-alive";
     if (stringData.find("Connection: close") != std::string::npos) {
@@ -304,7 +287,6 @@ void Lego_Server::connectionHandling(std::stop_token st, VSocket* client) {
     }
     if (stringData.find("GET") != std::string::npos) {
       std::string figure = "";
-      int mitad = 0;
       if (stringData.find("&lego/figure=") !=
           std::string::npos) {  /// lego/list.php?figure=
         auto request = parseLegoRequest(stringData);
@@ -480,12 +462,12 @@ int Lego_Server::readHeaders(VSocket* client, std::stringstream& datos,
                      // todos los headers
 }
 
-int Lego_Server::readBody(std::stringstream& body_s, 
-                          std::string& stringData,VSocket * client,std::stop_token& st) {
+int Lego_Server::readBody(std::stringstream& body_s, std::string& stringData,
+                          VSocket* client, std::stop_token& st) {
   int retorno = 0;
-  int pos = 0;
-  if (pos = stringData.find("Content-Length: ") != std::string::npos) {
-    int bodySize = 0;
+  
+  auto pos = stringData.find("Content-Length: ");
+  if (pos != std::string::npos) {
     int content_length = 0;
     if (pos != std::string::npos) {
       uint32_t start = pos + 16;
@@ -517,7 +499,7 @@ int Lego_Server::readBody(std::stringstream& body_s,
     }
     if (bytes_readed == content_length) {
       retorno = 1;
-     // body = body_s.str();
+      // body = body_s.str();
     }
   }
   return retorno;

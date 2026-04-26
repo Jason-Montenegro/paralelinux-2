@@ -33,18 +33,16 @@
  *
  **/
 
-
- /**
+/**
  *  Class constructor
  *
  *  @param     int id: socket descriptor
  *
  **/
-SSLSocket::SSLSocket(int id,bool Ipv6):VSocket(id, IPv6) { 
+SSLSocket::SSLSocket(int id, bool IPv6) : VSocket(id, IPv6) {
   this->Context = nullptr;
-    this->BIO = nullptr;
+  this->BIO = nullptr;
 }
-
 
 SSLSocket::SSLSocket(bool IPv6, bool contx) {
   this->Init('s', IPv6);
@@ -65,13 +63,11 @@ SSLSocket::SSLSocket(bool IPv6, bool contx) {
  *  @param     bool IPv6: if we need a IPv6 socket
  *
  **/
-SSLSocket::SSLSocket(const char* certFileName, const char* keyFileName, bool IPv6,
-                     bool contx)
+SSLSocket::SSLSocket(const char* certFileName, const char* keyFileName,
+                     bool IPv6, bool contx)
     : SSLSocket(IPv6, contx) {
   this->LoadCertificates(certFileName, keyFileName);
 }
-
-
 
 /**
  * Class destructor
@@ -283,21 +279,25 @@ size_t SSLSocket::Write(const void* buffer, size_t size) {
 VSocket* SSLSocket::AcceptConnection() {
   int new_id = -1;
   try {
-   new_id = this->WaitForConnection();  // O WaitForConnection()
-  } catch (const std::exception& e)  {
+    new_id = this->WaitForConnection();  // O WaitForConnection()
+  } catch (const std::exception& e) {
     return nullptr;
   }
 
-  if (new_id < 0) return nullptr;// no deberia de pasar
-  //SOCK_STREAM
-   SSLSocket* peer;
-  try{
-  peer = new SSLSocket(new_id,this->IPv6);
-  
-  //peer->type = this->type;
-  } catch  (const std::exception& e){
-     throw std::runtime_error("id invalida");
+  if (new_id < 0) return nullptr;  // no deberia de pasar
+                                   // SOCK_STREAM
+  SSLSocket* peer;
+  try {
+    peer = new SSLSocket(new_id, this->IPv6);
+
+    // peer->type = this->type;
+  } catch (const std::exception& e) {
+    throw std::runtime_error("id invalida");
   }
+  //linea agregada de lo que en teoria hace el copy
+  peer->Context = this->Context;
+  SSL_CTX_up_ref((SSL_CTX*)this->Context);
+
   SSL* ssl_obj = SSL_new((SSL_CTX*)this->Context);
   SSL_set_fd(ssl_obj, new_id);
   peer->BIO = (void*)ssl_obj;
@@ -342,18 +342,12 @@ const char* SSLSocket::GetCipher() {
 
 void SSLSocket::Copy(SSLSocket* original) {
   if (original) {
-    if (reinterpret_cast<SSL_CTX*>(original->Context)) {
-      this->Context = original->Context;
-      int st;
+    auto* ctx = reinterpret_cast<SSL_CTX*>(original->Context);
+    if (ctx){
+    SSL_CTX_up_ref(ctx);
+    this->Context = ctx;
     }
   }
-  // Constructs a new SSL * variable using SSL_new() function
-  // Check for errors
-
-  // Assign new variable to instance variable
-
-  // change conection status  to SSL using SSL_set_fd() function
-  // Check for errors
 }
 
 /**
