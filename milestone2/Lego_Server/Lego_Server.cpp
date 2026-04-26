@@ -652,16 +652,75 @@ void Lego_Server::populateFileSystem() {
                  "[1,brick 2x2 slope orange]"
                  "[2,brick 2x3 yellow][2,brick 2x2 yellow]",
                  "1");
-
+  
   populateFigure("/duck",
                  "[2,brick 1x1 yellow eye]"
                  "[1,brick 2x1 yellow][1,brick 2x4 slope orange]",
                  "2");
 
+  populateFigure("/horse",
+               "[5,brick 2x2 yellow]"
+               "[4,brick 2x4 white]"
+               "[2,brick 2x4 yellow]"
+               "[1,brick 2x6 yellow]",
+               "1");
+
+  populateFigure("/horse",
+               "[1,brick 2x3 yellow]"
+               "[2,brick 1x1 yellow eye]"
+               "[2,brick 2x1 yellow]"
+               "[1,brick 2x2 white]",
+               "2");
+               
+  populateFigure("/lion",
+               "[1,brick 2x8 yellow]"
+               "[6,brick 2x2 yellow]"
+               "[3,brick 2x4 yellow]"
+               "[5,brick 1x4 yellow]"
+               "[6,brick 1x2 yellow]"
+               "[1,brick 2x4 black]",
+               "1");
+
+  populateFigure("/lion",
+               "[1,plate 2x3 yellow]"
+               "[2,brick 1x2 black]"
+               "[2,brick 2x2 black]"
+               "[1,brick 2x2 red]"
+               "[1,brick 1x1 eyes dark grey]",
+               "2");
+
+  populateFigure("/giraffe",
+               "[4,brick 2x2 black]"
+               "[4,brick 2x2 yellow]"
+               "[6,brick 2x1 yellow]"
+               "[6,brick 2x1 black]"
+               "[1,brick 2x6 yellow]",
+               "1");
+
+  populateFigure("/giraffe",
+               "[2,brick 2x4 yellow]"
+               "[1,brick 2x3 yellow]"
+               "[1,brick 1x4 yellow]"
+               "[1,brick 2x3 red]"
+               "[2,brick 1x1 eye yellow]",
+               "2");
+
+  populateFigure("/fish",
+               "[3,brick 2x4 yellow]"
+               "[1,brick 2x3 yellow]"
+               "[2,brick 1x1 yellow eye]",
+               "1");
+
+  populateFigure("/fish",
+               "[2,brick 2x2 translucent blue]"
+               "[4,brick 2x2 translucent red]",
+               "2");
+
   populateFigure("/pablo",
                  "[7,brick 6x6 slope red]"
                  "[2,brick 2x3 yellow][2,brick 2x2 yellow]",
                  "1");
+
   populateFigure("/pablo",
                  "[2,brick 1x1 yellow eye]"
                  "[1,brick 2x1 yellow][1,brick 2x4 slope orange]",
