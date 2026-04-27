@@ -70,7 +70,7 @@ Lego_Server::Lego_Server(const char* key, const char* cert,
   this->server_socket_4_ssl = nullptr;
   this->server_socket_6_ssl = nullptr;
   initializeFileSystem(path);
-  std::cout << "tiene disco disco" << std::endl;
+ 
 
   if (queue_capacity < 1) {
     queue_capacity = COLITA;
@@ -344,7 +344,6 @@ void Lego_Server::connectionHandling(std::stop_token st, VSocket* client) {
               v.cbegin(), v.cend(), std::back_inserter(str), [](std::byte b) {
                 return static_cast<char>(std::to_integer<uint8_t>(b));
               });  //
-          std::cout << "todos los benditos logs" << str;
           std::stringstream ss(str);
           std::string line;
           std::string filasHtml = "";
@@ -572,7 +571,7 @@ std::pair<std::string, int> Lego_Server::parseLegoRequest(
       part = 1;  //
     }
   }
-  std::cout << "  parte soliciutada" << part << std::endl;
+  std::cout << "  parte soliciutada " << part << std::endl;
   return {figure, part};
 }
 
