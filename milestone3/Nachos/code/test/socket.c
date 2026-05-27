@@ -34,8 +34,8 @@ int main() {
   char dynamic_req[req_size];
    //char * dynamic_req = new char[req_size];
  //  int* dynamic_req = (int*) calloc(10, sizeof(int));
-   int i =0;
-   for (i = 0; i < req_size; ++i) { dynamic_req[i] = 0; }
+
+   for ( i = 0; i < req_size; ++i) { dynamic_req[i] = 0; }
 
    strcpy(dynamic_req, endpoint);
    strcat(dynamic_req, s);
@@ -52,7 +52,21 @@ int main() {
        Write("Error: No se pudo conectar al host\n", 35, 1);
 		  //
    } else {
-    Write(dynamic_req, strlen(dynamic_req), id);   
+    Write(dynamic_req, strlen(dynamic_req), id);
+    //free(dynamic_req);
+    // char bufferin[256];
+    // bytesRead = 1;
+    // while (bytesRead>0) {
+    //     for (i = 0; i < 256; ++i) { 
+    //         bufferin[i] = 0; 
+    //     }
+    //     bytesRead = Read(bufferin, 255, id);
+    //     if (bytesRead > 0) {
+    //         Write(bufferin, bytesRead, 1);
+    //     }
+    // }
+    Write("Salida de socket\n",18,1);  //8501
+
     ParseLego(id,0);
     Close(id);
     Exit(0);
