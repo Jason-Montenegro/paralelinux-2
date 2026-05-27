@@ -49,7 +49,7 @@ int main() { // comentarios
    //char * dynamic_req = new char[req_size];
  //  int* dynamic_req = (int*) calloc(10, sizeof(int));
 
-   for (i = 0; i < req_size; ++i) { dynamic_req[i] = 0; }
+   for ( i = 0; i < req_size; ++i) { dynamic_req[i] = 0; }
 
    strcpy(dynamic_req, endpoint);
    strcat(dynamic_req, s);
@@ -79,7 +79,7 @@ int main() { // comentarios
     //         Write(bufferin, bytesRead, 1);
     //     }
     // }
-    Write("se viene chavales\n",18,1);  //8501
+    Write("Salida de socket\n",18,1);  //8501
 
     ParseLego(id,0);
     Close(id);

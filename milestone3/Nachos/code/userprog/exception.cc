@@ -195,7 +195,7 @@ void NachOS_Create() {
   }
   int st = -1;
   if (p) {
-    fileSystem->Create(buffer.data(), 0)
+    fileSystem->Create(buffer.data(), 0);
      
     }
   // machine->WriteRegister(2, st);
