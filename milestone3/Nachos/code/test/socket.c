@@ -21,27 +21,13 @@ char * strcpy(char *to, const char *from) {
     return save;
 }
 
-int main() { // comentarios
+int main() {
 	int id;
   char s[100]; // Un buffer temporal razonable para la entrada de la consola
   // 1. Strings base
   // el chiky coso:  GET /lego/list.php?figure=fish&part=1
   char *endpoint = "GET &lego/figure=duck&part=1";
   char *protocol = " HTTP/1.0\r\nUser-Agent: nachos\r\n\r\n\r\n";
-  // cliente bien quemado
-//   Write("Escriba la figura : ", 20, 1);
-//   int i;
-//   int bytesRead = Read(s, 100, 0); // buffer quemado para figura
-// 	for (i = 0; i < 100; ++i) {
-//   	s[i] = 0; 
-//   }
-//   for (i = 0; i < 100; ++i) {
-//     if (s[i] == '\n' || s[i] == '\r') { // 
-//       s[i] = '\0';
-//       break;
-//        }
-//    }
-
    int req_size = strlen(endpoint) + strlen(s) + strlen(protocol) + 1;
 
 
