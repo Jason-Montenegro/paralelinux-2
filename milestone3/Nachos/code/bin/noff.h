@@ -7,6 +7,7 @@
 
 #ifndef NOFF_H
 #define NOFF_H
+
 #define NOFFMAGIC	0xbadfad 	/* magic number denoting Nachos 
 					 * object code file 
 					 */
@@ -26,4 +27,4 @@ typedef struct noffHeader {
 				 */
 } NoffHeader;
 
-#endif // NOFF_H
+#endif
