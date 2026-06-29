@@ -1,0 +1,236 @@
+[SERVIDOR] [18/06/2026 22:38] [ENRUTAMIENTO] Servidor escuchando en puertos: 8502, 9504, 8001, 9003
+[SERVIDOR] [18/06/2026 23:35] [ENRUTAMIENTO] Servidor escuchando en puertos: 8503, 9505, 8002, 9004
+[SERVIDOR] [18/06/2026 23:36] [ENRUTAMIENTO] Servidor escuchando en puertos: 8502, 9504, 8001, 9003
+[SERVIDOR] [18/06/2026 23:36] [ENRUTAMIENTO] Servidor escuchando en puertos: 8502, 9504, 8001, 9003
+[SERVIDOR] [18/06/2026 23:36] [ENRUTAMIENTO] Servidor escuchando en puertos: 8502, 9504, 8001, 9003
+[SERVIDOR] [18/06/2026 23:36] [ENRUTAMIENTO] Servidor escuchando en puertos: 8502, 9504, 8001, 9003
+[SERVIDOR] [18/06/2026 23:36] [ENRUTAMIENTO] Servidor escuchando en puertos: 8502, 9504, 8001, 9003
+[SERVIDOR] [18/06/2026 23:36] [ENRUTAMIENTO] Servidor escuchando en puertos: 8502, 9504, 8001, 9003
+[SERVIDOR] [18/06/2026 23:40] [ENRUTAMIENTO] Servidor escuchando en puertos: 8502, 9504, 8001, 9003
+[SERVIDOR] [18/06/2026 23:41] [ENRUTAMIENTO] Servidor escuchando en puertos: 8502, 9504, 8001, 9003
+[SERVIDOR] [18/06/2026 23:43] [ENRUTAMIENTO] Servidor escuchando en puertos: 8502, 9504, 8001, 9003
+[SERVIDOR] [18/06/2026 23:45] [ENRUTAMIENTO] Servidor escuchando en puertos: 8502, 9504, 8001, 9003
+[SERVIDOR] [18/06/2026 23:53] [ENRUTAMIENTO] Servidor escuchando en puertos: 8502, 9504, 8001, 9003
+[SERVIDOR] [18/06/2026 23:53] [ENRUTAMIENTO] Servidor escuchando en puertos: 8502, 9504, 8001, 9003
+[SERVIDOR] [18/06/2026 23:53] [ENRUTAMIENTO] Servidor escuchando en puertos: 8502, 9504, 8001, 9003
+[SERVIDOR] [18/06/2026 23:57] [ENRUTAMIENTO] Servidor escuchando en puertos: 8502, 9504, 8001, 9003
+[SERVIDOR] [19/06/2026 00:02] [ENRUTAMIENTO] Servidor escuchando en puertos: 8502, 9504, 8001, 9003
+[SERVIDOR] [19/06/2026 00:09] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [20/06/2026 21:04] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [20/06/2026 21:12] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [21/06/2026 17:27] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [21/06/2026 17:34] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [21/06/2026 17:35] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [21/06/2026 17:37] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [21/06/2026 17:43] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [21/06/2026 17:50] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [21/06/2026 17:52] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [21/06/2026 17:53] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [21/06/2026 17:53] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [21/06/2026 18:02] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [21/06/2026 18:07] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [21/06/2026 18:08] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [21/06/2026 18:11] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [21/06/2026 18:18] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [21/06/2026 18:19] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [21/06/2026 18:33] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [21/06/2026 18:34] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [21/06/2026 18:37] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [21/06/2026 18:40] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [21/06/2026 18:41] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [21/06/2026 19:28] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [21/06/2026 19:29] [SOLICITUD] Nueva conexion TCP establecida
+[CLIENTE] [21/06/2026 19:29] [SOLICITUD] Datos HTTP recibidos (Header)
+[SERVIDOR] [21/06/2026 19:29] [ENRUTAMIENTO] Cerrando conexion con el cliente
+[SERVIDOR] [21/06/2026 19:29] [SOLICITUD] Nueva conexion TCP establecida
+[CLIENTE] [21/06/2026 19:29] [SOLICITUD] Datos HTTP recibidos (Header)
+[SERVIDOR] [21/06/2026 19:29] [ENRUTAMIENTO] Cerrando conexion con el cliente
+[SERVIDOR] [21/06/2026 19:29] [SOLICITUD] Nueva conexion TCP establecida
+[CLIENTE] [21/06/2026 19:29] [SOLICITUD] Datos HTTP recibidos (Header)
+[SERVIDOR] [21/06/2026 19:29] [ENRUTAMIENTO] Cerrando conexion con el cliente
+[SERVIDOR] [21/06/2026 19:29] [SOLICITUD] Nueva conexion TCP establecida
+[CLIENTE] [21/06/2026 19:29] [SOLICITUD] Datos HTTP recibidos (Header)
+[SERVIDOR] [21/06/2026 19:29] [ENRUTAMIENTO] Cerrando conexion con el cliente
+[SERVIDOR] [21/06/2026 19:32] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [21/06/2026 19:34] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [21/06/2026 19:34] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [21/06/2026 19:34] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [21/06/2026 19:34] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [21/06/2026 19:34] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [21/06/2026 19:34] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [21/06/2026 19:34] [SOLICITUD] Nueva conexion TCP establecida
+[CLIENTE] [21/06/2026 19:34] [SOLICITUD] Datos HTTP recibidos (Header)
+[SERVIDOR] [21/06/2026 19:34] [ENRUTAMIENTO] Cerrando conexion con el cliente
+[SERVIDOR] [21/06/2026 19:35] [SOLICITUD] Nueva conexion TCP establecida
+[CLIENTE] [21/06/2026 19:35] [SOLICITUD] Datos HTTP recibidos (Header)
+[SERVIDOR] [21/06/2026 19:35] [ENRUTAMIENTO] Cerrando conexion con el cliente
+[SERVIDOR] [21/06/2026 19:35] [SOLICITUD] Nueva conexion TCP establecida
+[CLIENTE] [21/06/2026 19:35] [SOLICITUD] Datos HTTP recibidos (Header)
+[SERVIDOR] [21/06/2026 19:53] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [21/06/2026 19:54] [SOLICITUD] Nueva conexion TCP establecida
+[CLIENTE] [21/06/2026 19:54] [SOLICITUD] Datos HTTP recibidos (Header)
+[SERVIDOR] [21/06/2026 19:54] [ENRUTAMIENTO] Cerrando conexion con el cliente
+[SERVIDOR] [21/06/2026 20:21] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [21/06/2026 20:21] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [21/06/2026 20:32] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [21/06/2026 20:44] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [21/06/2026 21:19] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [21/06/2026 21:19] [SOLICITUD] Nueva conexion TCP establecida
+[CLIENTE] [21/06/2026 21:19] [SOLICITUD] Datos HTTP recibidos (Header)
+[SERVIDOR] [21/06/2026 21:19] [ENRUTAMIENTO] Cerrando conexion con el cliente
+[SERVIDOR] [21/06/2026 21:24] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [21/06/2026 21:24] [SOLICITUD] Nueva conexion TCP establecida
+[CLIENTE] [21/06/2026 21:24] [SOLICITUD] Datos HTTP recibidos (Header)
+[SERVIDOR] [21/06/2026 21:24] [ENRUTAMIENTO] Cerrando conexion con el cliente
+[SERVIDOR] [21/06/2026 21:25] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [21/06/2026 21:26] [SOLICITUD] Nueva conexion TCP establecida
+[CLIENTE] [21/06/2026 21:26] [SOLICITUD] Datos HTTP recibidos (Header)
+[SERVIDOR] [21/06/2026 21:26] [ENRUTAMIENTO] Cerrando conexion con el cliente
+[SERVIDOR] [21/06/2026 21:27] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [21/06/2026 21:28] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [21/06/2026 21:28] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [21/06/2026 21:29] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [21/06/2026 21:37] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [21/06/2026 21:38] [SOLICITUD] Nueva conexion TCP establecida
+[CLIENTE] [21/06/2026 21:38] [SOLICITUD] Datos HTTP recibidos (Header)
+[SERVIDOR] [21/06/2026 21:38] [ENRUTAMIENTO] Cerrando conexion con el cliente
+[SERVIDOR] [21/06/2026 21:41] [SOLICITUD] Nueva conexion TCP establecida
+[CLIENTE] [21/06/2026 21:41] [SOLICITUD] Datos HTTP recibidos (Header)
+[SERVIDOR] [21/06/2026 21:41] [ENRUTAMIENTO] Cerrando conexion con el cliente
+[SERVIDOR] [21/06/2026 21:41] [SOLICITUD] Nueva conexion TCP establecida
+[CLIENTE] [21/06/2026 21:41] [SOLICITUD] Datos HTTP recibidos (Header)
+[SERVIDOR] [21/06/2026 21:41] [ENRUTAMIENTO] Cerrando conexion con el cliente
+[SERVIDOR] [21/06/2026 21:41] [SOLICITUD] Nueva conexion TCP establecida
+[CLIENTE] [21/06/2026 21:41] [SOLICITUD] Datos HTTP recibidos (Header)
+[SERVIDOR] [21/06/2026 21:41] [ENRUTAMIENTO] Cerrando conexion con el cliente
+[SERVIDOR] [21/06/2026 23:00] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [23/06/2026 09:07] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [23/06/2026 11:57] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [23/06/2026 11:59] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [23/06/2026 12:01] [SOLICITUD] Nueva conexion TCP establecida
+[CLIENTE] [23/06/2026 12:01] [SOLICITUD] Datos HTTP recibidos (Header)
+[SERVIDOR] [23/06/2026 12:01] [ENRUTAMIENTO] Cerrando conexion con el cliente
+[SERVIDOR] [23/06/2026 12:01] [SOLICITUD] Nueva conexion TCP establecida
+[CLIENTE] [23/06/2026 12:01] [SOLICITUD] Datos HTTP recibidos (Header)
+[SERVIDOR] [23/06/2026 12:01] [ENRUTAMIENTO] Procesando GET para figura: Ballena
+[SERVIDOR] [23/06/2026 12:01] [RESPUESTA] Enviando pieza 1 de Ballena
+[SERVIDOR] [23/06/2026 12:01] [ENRUTAMIENTO] Cerrando conexion con el cliente
+[SERVIDOR] [23/06/2026 12:01] [SOLICITUD] Nueva conexion TCP establecida
+[CLIENTE] [23/06/2026 12:01] [SOLICITUD] Datos HTTP recibidos (Header)
+[SERVIDOR] [23/06/2026 12:01] [ENRUTAMIENTO] Procesando GET para figura: Maeva
+[SERVIDOR] [23/06/2026 12:01] [RESPUESTA] Enviando pieza 1 de Maeva
+[SERVIDOR] [23/06/2026 12:01] [ENRUTAMIENTO] Cerrando conexion con el cliente
+[SERVIDOR] [23/06/2026 12:04] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [23/06/2026 12:15] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [23/06/2026 12:16] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [23/06/2026 12:17] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [23/06/2026 12:19] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [23/06/2026 12:21] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [23/06/2026 12:22] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [23/06/2026 12:22] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:23] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:23] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:23] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:23] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:23] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:23] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:23] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:23] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:23] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:23] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:23] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:24] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [23/06/2026 12:26] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [23/06/2026 12:27] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:27] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:27] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:27] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:27] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:27] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:27] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:27] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:27] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:27] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:27] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:27] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:27] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:27] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:27] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:27] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:27] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:27] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:27] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:27] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:27] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:27] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:27] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:27] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:27] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:27] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:27] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:27] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:27] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:27] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:28] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:28] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:28] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:28] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:28] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [23/06/2026 12:28] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [23/06/2026 12:30] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [23/06/2026 12:31] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [23/06/2026 12:32] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [23/06/2026 12:32] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [23/06/2026 12:32] [SOLICITUD] Nueva conexion TCP establecida
+[CLIENTE] [23/06/2026 12:32] [SOLICITUD] Datos HTTP recibidos (Header)
+[SERVIDOR] [23/06/2026 12:32] [ENRUTAMIENTO] Procesando GET para figura: piedra
+[SERVIDOR] [23/06/2026 12:32] [RESPUESTA] Enviando pieza 1 de piedra
+[SERVIDOR] [23/06/2026 12:32] [ENRUTAMIENTO] Cerrando conexion con el cliente
+[SERVIDOR] [23/06/2026 12:33] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:33] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:33] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:33] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:33] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:33] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:33] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:33] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:33] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:35] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [23/06/2026 12:36] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [23/06/2026 12:39] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [23/06/2026 12:39] [SOLICITUD] Nueva conexion TCP establecida
+[CLIENTE] [23/06/2026 12:39] [SOLICITUD] Datos HTTP recibidos (Header)
+[SERVIDOR] [23/06/2026 12:39] [ENRUTAMIENTO] Procesando GET para figura: Maeva
+[SERVIDOR] [23/06/2026 12:39] [RESPUESTA] Enviando pieza 1 de Maeva
+[SERVIDOR] [23/06/2026 12:39] [ENRUTAMIENTO] Cerrando conexion con el cliente
+[SERVIDOR] [23/06/2026 12:41] [SOLICITUD] Nueva conexion TCP establecida
+[CLIENTE] [23/06/2026 12:41] [SOLICITUD] Datos HTTP recibidos (Header)
+[SERVIDOR] [23/06/2026 12:41] [ENRUTAMIENTO] Cerrando conexion con el cliente
+[SERVIDOR] [23/06/2026 12:41] [SOLICITUD] Nueva conexion TCP establecida
+[CLIENTE] [23/06/2026 12:41] [SOLICITUD] Datos HTTP recibidos (Header)
+[SERVIDOR] [23/06/2026 12:41] [ENRUTAMIENTO] Procesando GET para figura: Ballena
+[SERVIDOR] [23/06/2026 12:41] [RESPUESTA] Enviando pieza 1 de Ballena
+[SERVIDOR] [23/06/2026 12:41] [ENRUTAMIENTO] Cerrando conexion con el cliente
+[SERVIDOR] [23/06/2026 12:42] [SOLICITUD] Nueva conexion TCP establecida
+[CLIENTE] [23/06/2026 12:42] [SOLICITUD] Datos HTTP recibidos (Header)
+[SERVIDOR] [23/06/2026 12:42] [ENRUTAMIENTO] Procesando GET para figura: Maeva
+[SERVIDOR] [23/06/2026 12:42] [RESPUESTA] Enviando pieza 2 de Maeva
+[SERVIDOR] [23/06/2026 12:42] [ENRUTAMIENTO] Cerrando conexion con el cliente
+[SERVIDOR] [23/06/2026 12:45] [ERROR] Fallo al iniciar servidor: VSocket::BindIPv4Address already in use
+[SERVIDOR] [23/06/2026 12:52] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [23/06/2026 12:52] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [23/06/2026 12:53] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [23/06/2026 12:54] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [23/06/2026 12:54] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [23/06/2026 12:54] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [23/06/2026 12:54] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [23/06/2026 12:58] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [23/06/2026 13:01] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [23/06/2026 13:03] [SOLICITUD] Nueva conexion TCP establecida
+[CLIENTE] [23/06/2026 13:03] [SOLICITUD] Datos HTTP recibidos (Header)
+[SERVIDOR] [23/06/2026 13:03] [ENRUTAMIENTO] Cerrando conexion con el cliente
+[SERVIDOR] [23/06/2026 13:03] [SOLICITUD] Nueva conexion TCP establecida
+[CLIENTE] [23/06/2026 13:03] [SOLICITUD] Datos HTTP recibidos (Header)
+[SERVIDOR] [23/06/2026 13:03] [ENRUTAMIENTO] Procesando GET para figura: Maeva
+[SERVIDOR] [23/06/2026 13:03] [RESPUESTA] Enviando pieza 1 de Maeva
+[SERVIDOR] [23/06/2026 13:03] [ENRUTAMIENTO] Cerrando conexion con el cliente
