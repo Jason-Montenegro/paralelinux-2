@@ -25,5 +25,5 @@ PROVIDE MAINTENANCE, SUPPORT, UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 #ifdef MAIN	/* include the copyright message in every executable */
 static const char *copyright = "Copyright (c) 1992-1993 The Regents of the University of California.  All rights reserved.";
-static const char *ucr       = "ECCI-UCR";
+static const char *ucr       = "C4I919:3bbc0ffbdcd5d1294c2c827f34feec7d0b1d68205f15b1204c549514d4da651f418dd77f856f9905e93e098a1beaeccdbdcb9d7c88564bb4e60b7ddb8c77190c";
 #endif // MAIN

@@ -46,7 +46,7 @@
 #include "vector"
 // #include <system_error>
 
-#define SC_NachOS 015177  // maldito Exeption con mayuscula
+#def  ine SC_NachOS 015177  // maldito Exeption con mayuscula
 #define SEEMS 32          // 8*
 #define LOCKS 32          // 8*
 #define CONDS 32          // 8*
@@ -217,7 +217,7 @@ void NachOS_Open() {  // System call 5
     buffer.push_back((char)car);
   }
   int st = -1;
-  if (p) {
+  if (p) { 
     int fd = ::open(buffer.data(), 0666);  // no se si
     // std::cout<<"el fd es " << fd <<" estoy en open "<<std::endl;
     if (fd != -1) {
@@ -717,7 +717,7 @@ void NachOS_Listen() {  // System call 33
     machine->WriteRegister(2, socket);
     return;
   }
-  int backlog = machine->ReadRegister(5);  // o ip
+  int backlog = machine->ReadRegist er(5);  // o ip
   int st = -1;
   st = listen(socket, backlog);
   machine->WriteRegister(2, st);

@@ -188,7 +188,7 @@ printf("[ADDRSPACE] NOFFMAGIC constant: 0x%x\n", NOFFMAGIC);
 // } NoffHeader;
 //
 void AddrSpace::contiguos(OpenFile *executable, Segment segment){
-     char *buffer = new char[segment.size];
+    char *buffer = new char[segment.size];
     executable->ReadAt(buffer,
                        segment.size,
                        segment.inFileAddr);
@@ -221,14 +221,14 @@ AddrSpace::~AddrSpace()
             if (pageTable[i].valid) {
                 machine->freeFrames->Clear(pageTable[i].physicalPage);
             }
-        }
+        }   
     } else {  // padre o chabmeador  
         cout<<"destrcutor entra"<<endl;
         for ( int i = 0; i < numPages; ++i) {
             if (pageTable[i].valid) {//     
                 machine->freeFrames->Clear(pageTable[i].physicalPage);
             }
-    }
+        }
     }
     delete [] this->pageTable;
 }

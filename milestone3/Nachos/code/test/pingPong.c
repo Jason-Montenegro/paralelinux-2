@@ -13,7 +13,7 @@ main( int argc, char * argv[] ) {
     Write(argv, 4, 1);
 }
 
-
+//
 void SimpleThread(int num)
 {
 

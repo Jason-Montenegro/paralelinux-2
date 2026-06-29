@@ -10,6 +10,7 @@ main()
 
 
     Create( "nachos.2" );
+    //Create( "nachos.1" );
     input  = Open( "nachos.1" );
     output = Open( "nachos.2" );
     while( (n = Read( buffer, 1024, input ) ) > 0 ) {
