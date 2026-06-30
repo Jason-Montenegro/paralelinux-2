@@ -4,6 +4,8 @@ CXXFLAGS = -std=c++23
 BIN_DIR = bin
 SRC_DIR = src
 
+UNAME_S := $(shell uname -s)
+
 ifeq ($(UNAME_S),Darwin)
 	CXXFLAGS += -I/opt/homebrew/opt/openssl@3.6/include -L/opt/homebrew/opt/openssl@3.6/lib
 endif
@@ -36,7 +38,6 @@ inter:
 	-I../filesystem-repl/src \
 	$(SRC_DIR)/Lego_Inter.cpp \
 	$(SRC_DIR)/Inter_main.cpp \
-	$(SRC_DIR)/Lego_Client.cpp \
 	$(SRC_DIR)/SSLSocket.cc \
 	$(SRC_DIR)/VSocket.cc \
 	$(SRC_DIR)/Socket.cc \
