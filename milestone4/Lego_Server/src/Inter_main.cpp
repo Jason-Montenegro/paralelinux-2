@@ -7,7 +7,7 @@
 
 #include "Lego_Inter.hpp"
 int main(int argc, char** argv) {
-  // Lego_Server server(); //tengo que pasarle el file system
+  // LegoServer server(); //tengo que pasarle el file system
   // API* api = nullptr;
       std::cout<<"Inicio de servidor "<<std::endl;
   std::string key = "key.pem";  // el nombre propio

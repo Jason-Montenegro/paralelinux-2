@@ -1,36 +1,32 @@
 #include "LoggerFiguras.hpp"
-// definicion de logger global
+
+#include <ctime>
+#include <filesystem>
+#include <fstream>
+#include <iostream>
+#include <mutex>
+#include <sstream>
+#include <string>
+
 LoggerFiguras logger;
 
-// metodos de enums
-
-// metodo para pasar la entidad de enum a string
 std::string EntidadtoString(Entidad e) {
   switch (e) {
-    case Entidad::CLIENTE:
-      return "CLIENTE";
-    case Entidad::INTERM: // aun no pequenna bebe
-      return "INTERM";
-    case Entidad::SERVIDOR:
-      return "SERVIDOR";
-    default:
-      break;
+    case Entidad::CLIENTE:  return "CLIENTE";
+    case Entidad::INTERM:   return "INTERM";
+    case Entidad::SERVIDOR: return "SERVIDOR";
+    default:                break;
   }
   return "";
 }
 
 std::string TipotoString(TipoLog t) {
   switch (t) {
-    case TipoLog::SOLICITUD:
-      return "SOLICITUD";
-    case TipoLog::ENRUTAMIENTO:
-      return "ENRUTAMIENTO";
-    case TipoLog::RESPUESTA:
-      return "RESPUESTA";
-    case TipoLog::ERROR:
-      return "ERROR";
-    default:
-      break;
+    case TipoLog::SOLICITUD:    return "SOLICITUD";
+    case TipoLog::ENRUTAMIENTO: return "ENRUTAMIENTO";
+    case TipoLog::RESPUESTA:    return "RESPUESTA";
+    case TipoLog::ERROR:        return "ERROR";
+    default:                    break;
   }
   return "";
 }
@@ -44,11 +40,6 @@ std::string LoggerFiguras::getFechaHora() {
   return std::string(buffer);
 }
 
-/**
- * LoggerFiguras crea una carpeta log
- * Abre el archivo y habilita el proceso de logs
- *
- */
 LoggerFiguras::LoggerFiguras(){
     fs::create_directory("logInter");
     this->file.open("logInter/logInter.txt", std::ios::app);

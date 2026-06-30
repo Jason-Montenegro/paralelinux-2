@@ -6,24 +6,31 @@
 #include <iostream>
 #include <string>
 
-// enums para que logger pueda usar
+/// @brief Tipos de entidad para bitacoras
 enum class Entidad { CLIENTE, INTERM, SERVIDOR };
 
+/// @brief Tipos de bitacoras
 enum class TipoLog {
   SOLICITUD,     // recep de solicitudes
   ENRUTAMIENTO,  // enrutamiento de mensajes
   RESPUESTA,     // generación de respuestas
   ERROR          // ocurrencia de errores
 };
-// declaracion de metodos de enums
+
+// Conversion de enums a string
+
 std::string EntidadtoString(Entidad e);
 std::string TipotoString(TipoLog t);
 
 class Logger {
  public:
   std::string getFechaHora();
-  Logger();
-  ~Logger();
+  /**
+   * Logger crea una carpeta log
+   * Abre el archivo y habilita el proceso de logs
+  */
+  Logger() = default;
+  ~Logger() = default;
   std::string log(Entidad entidad, TipoLog tipo, const std::string& mensaje);
 };
 
