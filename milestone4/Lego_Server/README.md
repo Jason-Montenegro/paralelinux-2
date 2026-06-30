@@ -1,15 +1,9 @@
-# File system REPL
+# Lego Server y Lego Intermediary
 
-Use `make -j` to compile, then to run it use `bin/ezfs`. once inside
-use `help` command to get help.
+Para compilar el servidor, corra `make server` y, luego, para ejecutarlo, `bin/lego_server`.
 
-Steps on how to use REPL:
+Para compilar el intermediario, corra `make inter` y, luego, para ejecutarlo, `bin/lego_inter`.
 
-1. `format` a disk partition with a specific block size. Example: 100000000 which
-is about ~95MB or so
-2. `mount <name>` the disk partition
-3. Now the REPL is working
+Ambos programas siguen las reglas del protocolo mancomunado, entonces, ahí se especifican los puertos y detalles de comunicación.
 
-## Note
-
-To exit the REPL just input `exit` and it'll unmount automatically
+[Enlace directo](./../protocolo.pdf)
