@@ -4,12 +4,10 @@
  * Initializes FileSystem API and accepts connections
  */
 
-
 #include "Lego_Inter.hpp"
+
 int main(int argc, char** argv) {
-  // LegoServer server(); //tengo que pasarle el file system
-  // API* api = nullptr;
-      std::cout<<"Inicio de servidor "<<std::endl;
+  std::cout<<"Inicio de servidor "<<std::endl;
   std::string key = "key.pem";  // el nombre propio
   std::string cert = "cert.pem";
   std::string container = "b.bin";
@@ -37,9 +35,9 @@ int main(int argc, char** argv) {
       }
     }
   }
-    Lego_Inter server(key.c_str(), cert.c_str(), queue_capacity,container);
-    server.cicloServer();
-   
-    return EXIT_SUCCESS;
+  Lego_Inter server(key.c_str(), cert.c_str(), queue_capacity,container);
+  server.cicloServer();
+  
+  return EXIT_SUCCESS;
   }
 

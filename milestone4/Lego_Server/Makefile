@@ -18,7 +18,7 @@ server:
 	mkdir -p $(BIN_DIR)
 	$(CXX) $(CXXFLAGS) \
 	-I../filesystem-repl/src \
-	$(SRC_DIR)/Lego_Server.cpp \
+	$(SRC_DIR)/LegoServer.cpp \
 	$(SRC_DIR)/Server_main.cpp \
 	$(SRC_DIR)/SSLSocket.cc \
 	$(SRC_DIR)/VSocket.cc \

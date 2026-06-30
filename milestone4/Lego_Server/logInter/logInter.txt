@@ -234,3 +234,4 @@
 [SERVIDOR] [23/06/2026 13:03] [ENRUTAMIENTO] Procesando GET para figura: Maeva
 [SERVIDOR] [23/06/2026 13:03] [RESPUESTA] Enviando pieza 1 de Maeva
 [SERVIDOR] [23/06/2026 13:03] [ENRUTAMIENTO] Cerrando conexion con el cliente
+[SERVIDOR] [30/06/2026 09:44] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
