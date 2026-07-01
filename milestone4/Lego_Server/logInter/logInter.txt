@@ -235,3 +235,56 @@
 [SERVIDOR] [23/06/2026 13:03] [RESPUESTA] Enviando pieza 1 de Maeva
 [SERVIDOR] [23/06/2026 13:03] [ENRUTAMIENTO] Cerrando conexion con el cliente
 [SERVIDOR] [30/06/2026 09:44] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [01/07/2026 15:49] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [01/07/2026 15:50] [SOLICITUD] Nueva conexion TCP establecida
+[CLIENTE] [01/07/2026 15:50] [SOLICITUD] Datos HTTP recibidos (Header)
+[SERVIDOR] [01/07/2026 15:50] [ENRUTAMIENTO] Cerrando conexion con el cliente
+[SERVIDOR] [01/07/2026 15:50] [SOLICITUD] Nueva conexion TCP establecida
+[CLIENTE] [01/07/2026 15:50] [SOLICITUD] Datos HTTP recibidos (Header)
+[SERVIDOR] [01/07/2026 15:50] [ENRUTAMIENTO] Procesando GET para figura: s
+[SERVIDOR] [01/07/2026 15:50] [ERROR] Server Intermediario en la papa 
+[SERVIDOR] [01/07/2026 15:50] [ENRUTAMIENTO] Cerrando conexion con el cliente
+[SERVIDOR] [01/07/2026 15:50] [SOLICITUD] Nueva conexion TCP establecida
+[CLIENTE] [01/07/2026 15:50] [SOLICITUD] Datos HTTP recibidos (Header)
+[SERVIDOR] [01/07/2026 15:50] [ENRUTAMIENTO] Procesando GET para figura: s
+[SERVIDOR] [01/07/2026 15:50] [ERROR] Server Intermediario en la papa 
+[SERVIDOR] [01/07/2026 15:50] [ENRUTAMIENTO] Cerrando conexion con el cliente
+[SERVIDOR] [01/07/2026 15:50] [SOLICITUD] Nueva conexion TCP establecida
+[CLIENTE] [01/07/2026 15:50] [SOLICITUD] Datos HTTP recibidos (Header)
+[SERVIDOR] [01/07/2026 15:50] [ENRUTAMIENTO] Cerrando conexion con el cliente
+[SERVIDOR] [01/07/2026 15:51] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [01/07/2026 15:51] [SOLICITUD] Nueva conexion TCP establecida
+[CLIENTE] [01/07/2026 15:51] [SOLICITUD] Datos HTTP recibidos (Header)
+[SERVIDOR] [01/07/2026 15:51] [ENRUTAMIENTO] Cerrando conexion con el cliente
+[SERVIDOR] [01/07/2026 15:52] [SOLICITUD] Nueva conexion TCP establecida
+[CLIENTE] [01/07/2026 15:52] [SOLICITUD] Datos HTTP recibidos (Header)
+[SERVIDOR] [01/07/2026 15:52] [ENRUTAMIENTO] Procesando GET para figura: fish
+[SERVIDOR] [01/07/2026 15:52] [RESPUESTA] Enviando pieza 1 de fish
+[SERVIDOR] [01/07/2026 15:52] [ENRUTAMIENTO] Cerrando conexion con el cliente
+[SERVIDOR] [01/07/2026 16:06] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [01/07/2026 16:07] [SOLICITUD] Nueva conexion TCP establecida
+[CLIENTE] [01/07/2026 16:07] [SOLICITUD] Datos HTTP recibidos (Header)
+[SERVIDOR] [01/07/2026 16:07] [ENRUTAMIENTO] Cerrando conexion con el cliente
+[SERVIDOR] [01/07/2026 16:16] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [01/07/2026 16:16] [SOLICITUD] Nueva conexion TCP establecida
+[CLIENTE] [01/07/2026 16:16] [SOLICITUD] Datos HTTP recibidos (Header)
+[SERVIDOR] [01/07/2026 16:16] [ENRUTAMIENTO] Cerrando conexion con el cliente
+[SERVIDOR] [01/07/2026 17:10] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [01/07/2026 17:10] [SOLICITUD] Nueva conexion TCP establecida
+[CLIENTE] [01/07/2026 17:10] [SOLICITUD] Datos HTTP recibidos (Header)
+[SERVIDOR] [01/07/2026 17:10] [ENRUTAMIENTO] Cerrando conexion con el cliente
+[SERVIDOR] [01/07/2026 17:11] [SOLICITUD] Nueva conexion TCP establecida
+[CLIENTE] [01/07/2026 17:11] [SOLICITUD] Datos HTTP recibidos (Header)
+[SERVIDOR] [01/07/2026 17:11] [ENRUTAMIENTO] Procesando GET para figura: tortuga
+[SERVIDOR] [01/07/2026 17:11] [ERROR] Server Intermediario en la papa 
+[SERVIDOR] [01/07/2026 17:11] [ENRUTAMIENTO] Cerrando conexion con el cliente
+[SERVIDOR] [01/07/2026 17:21] [ENRUTAMIENTO] Servidor escuchando en puertos: 8501, 9503, 8000, 9002
+[SERVIDOR] [01/07/2026 17:22] [SOLICITUD] Nueva conexion TCP establecida
+[CLIENTE] [01/07/2026 17:22] [SOLICITUD] Datos HTTP recibidos (Header)
+[SERVIDOR] [01/07/2026 17:22] [ENRUTAMIENTO] Cerrando conexion con el cliente
+[SERVIDOR] [01/07/2026 17:22] [SOLICITUD] Nueva conexion TCP establecida
+[CLIENTE] [01/07/2026 17:22] [SOLICITUD] Datos HTTP recibidos (Header)
+[SERVIDOR] [01/07/2026 17:22] [ENRUTAMIENTO] Cerrando conexion con el cliente
+[SERVIDOR] [01/07/2026 17:23] [SOLICITUD] Nueva conexion TCP establecida
+[CLIENTE] [01/07/2026 17:23] [SOLICITUD] Datos HTTP recibidos (Header)
+[SERVIDOR] [01/07/2026 17:23] [ENRUTAMIENTO] Cerrando conexion con el cliente

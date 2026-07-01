@@ -645,7 +645,7 @@ void LegoServer::broadcastToNetwork() {
   sockaddr_in addr{};
   addr.sin_family = AF_INET;
   addr.sin_port = htons(5001);  // Puertos
-  addr.sin_addr.s_addr = inet_addr("172.16.123.111");  // Red broadcast
+  addr.sin_addr.s_addr = inet_addr("192.168.1.255");//172.16.123.111");  // Red broadcast
 
   std::string msg = "SERVER " + std::to_string(this->puertoB);
   sendto(sock, msg.c_str(), msg.size(), 0, (sockaddr*)&addr, sizeof(addr));

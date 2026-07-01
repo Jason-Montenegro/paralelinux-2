@@ -78,12 +78,20 @@ class Lego_Client {
    * @return std::string request HTTP
    */
   std::string buildListRequest();
+
+  /**
+   * @brief Construye un request HTTP GET para obtener logs de intermediario.
+   *
+   * @return std::string request HTTP
+   */
+  std::string buildLogRequest();
   //agregar mensajes de solicitud no procesada 
   /**
    * @brief Extrae el body de una respuesta HTTP.
    *
    * @param response Respuesta completa del servidor
    * @return std::string contenido del body
+   * 
    */
   std::string parseBody(const std::string& response);
 
@@ -111,6 +119,15 @@ class Lego_Client {
    */
   void parseFigures(const std::string& body);
 
+  /**
+   * @brief Parsea logs desde HTML.
+   *
+   * Extrae el registro y lo extrae a texto std::string
+   *
+   * @param body HTML 
+   */
+  std::string parseLog(const std::string& body);
+
   /* Clase comprobacion mas adelante*/
   bool validateEntry(std::string);
 
@@ -137,6 +154,13 @@ class Lego_Client {
    * @return std::string body de la respuesta
    */
   std::string solicitarLista();
+
+  /**
+   * @brief Solicita logs al Inter.
+   *
+   * @return std::string body de respuesta
+   */
+  std::string solicitarLog();
 
   /**
    * @brief Solicita una mitad o la totalidad de una figura, en caso de que

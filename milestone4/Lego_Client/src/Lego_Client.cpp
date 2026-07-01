@@ -62,8 +62,7 @@ void Lego_Client::cicloCliente() {
           std::cerr << RED"\nError al solicitar lista: " << e.what()
                     <<  RESET << std::endl;
         }
-      } else {
-        if (opcion == 2) {
+      } else if(opcion == 2) {
           try {
             procesarFigura();
           } catch (const std::exception& e) {
@@ -71,24 +70,32 @@ void Lego_Client::cicloCliente() {
             std::cerr << RED"\nError al solicitar figura: " << e.what()
                       << RESET << std::endl;
           }
-        } else {
+      }else if(opcion == 3){
+        try {
+          std::cout << solicitarLog() << std::endl;
+        }catch (const std::exception& e) {
+            std::cerr << RED
+                      << "\nError al solicitar logs: "
+                      << e.what()
+                      << RESET << std::endl;
+        }
+       } else {
           if (opcion != 0) {
             //system("clear");
             std::cout
                 << RED"\nOpcion no existente, intente de nuevo!"<<RESET
                 << std::endl;
           }
-        }
       }
-
     } catch (const std::exception& e) {
       std::cerr << "Error general: " << e.what() << std::endl;
     } catch (...) {
       std::cerr << "Error desconocido\n";
     }
   }
-  // close();
 }
+
+  // close();
 
 void Lego_Client::mostrarMenu() {
   //std::string menu =
@@ -116,13 +123,16 @@ void Lego_Client::mostrarMenu() {
     std::cout << "\n";
     std::cout << "  " ORANGE "\t\t\"1\"" RESET  "  ->  " RESET
               << CYAN "LIST_FIGURES" RESET
-              << "   Ver lista de figuras \n";
+              << "   Ver lista de figuras. \n";
     std::cout << "  " ORANGE "\t\t\"2\"" RESET  "  ->  " RESET
               << CYAN "GET_FIGURE " RESET
-              << "    Consultar piezas de una figura\n";
+              << "    Consultar piezas de una figura.\n";
+    std::cout << "  " ORANGE "\t\t\"3\"" RESET  "  ->  " RESET
+              << CYAN "GET_LOGS " RESET
+              << "      Imprimir logs de intermediario.\n";
     std::cout << "  " ORANGE "\t\t\"0\"" RESET  "  ->  " RESET
               << CYAN "STOP       " RESET
-              << "    Salir\n";
+              << "    Salir.\n";
     std::cout << ORANGE"\n\n"  "  Opcion Seleccionada: " RESET;
 }
 
@@ -289,11 +299,39 @@ std::string Lego_Client::solicitarLista() {
   std::string request = buildListRequest();
   client->Write(request.c_str());
   std::string response = readResponse();
+  //Comprobacion Jafet
+  //std::cout << "RESPUESTA COMPLETA!!!!!!!!!!!!!!!1\n";
+ // std::cout << response << std::endl;
+
+  //std::string body = parseBody(response);
+
+  //std::cout << "BODY\n";
+  //std::cout << body << std::endl;
+  //fin 
+
   delete client;
   client = nullptr;
   return parseBody(response);
 }
 
+// los clientes son capaces de solicitar los logs al intermediario
+// el intermediario resuelve la solicitud de logs y los envia al cliente
+std::string Lego_Client::solicitarLog() {
+  OpenConnection();
+  std::string request = buildLogRequest();
+  client->Write(request.c_str());
+  std::string response = readResponse();
+  delete client;
+  client = nullptr;
+  return parseLog(parseBody(response));
+}
+// creador del request de log
+std::string Lego_Client::buildLogRequest(){
+  return "GET /&logs=1 HTTP/1.1\r\n"
+         "Host: localhost\r\n"
+         "Accept: text/html\r\n"
+         "Connection: close\r\n\r\n";
+}
 std::string Lego_Client::buildListRequest() {
   return "GET /&list/figures HTTP/1.1\r\n"
          "Host: localhost\r\n"
@@ -335,7 +373,7 @@ std::string Lego_Client::buildListRequest() {
   // (version mas descente)
   std::vector<std::string> Lego_Client::parseList(const std::string& body) {
     std::vector<std::string> figuras;
-    std::regex row_regex(R"(<tr>\s*<td>([^<]+)</td>\s*</tr>)");
+    std::regex row_regex(R"(<tr>\s*<td>([^<]+)</td>\s*<td)"); //salida de list cambiada
     std::smatch m;
     auto it = body.cbegin();
     while (std::regex_search(it, body.cend(), m, row_regex)){
@@ -372,22 +410,21 @@ void Lego_Client::parseFigures(const std::string& body) {
         this->lego_figuras[nombre] += cantidad;
         it = match.suffix().first;
   }
-  
-  /*std::regex row_regex(
-      R"ROW(<TR><TD ALIGN=center>\s*(\d+)\s*</TD>[\s\S]*?SRC="([^"]+)")ROW");
-  std::smatch match;
-  auto it = body.cbegin();
-  while (std::regex_search(it, body.cend(), match, row_regex)) {
-    int cantidad = std::stoi(match[1]);
-    std::string ruta = match[2];
-    if (ruta.find("/lego/images/") != std::string::npos) {
-      std::string nombre = ruta.substr(ruta.find_last_of('/') + 1);
-      nombre = nombre.substr(0, nombre.find_last_of('.'));
-      this->lego_figuras[nombre] += cantidad;
-    }
-
-    it = match.suffix().first;
-  }*/
 }
 
+std::string Lego_Client::parseLog(const std::string& body){
+  std::regex regexLog(R"(<tr><td>INFO</td><td>(.*?)</td></tr>)");
+
+    std::smatch match;
+    std::string resultado;
+    std::string::const_iterator inicio = body.cbegin();
+
+    while (std::regex_search(inicio, body.cend(), match, regexLog)) {
+        resultado += match[1].str();
+        resultado += '\n';
+        inicio = match.suffix().first;
+    }
+
+    return resultado;
+}
 /// std::regex img_regex(R"(SRC="([^"]+)")");

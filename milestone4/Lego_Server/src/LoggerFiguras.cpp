@@ -63,10 +63,26 @@ void LoggerFiguras::log(Entidad entidad, TipoLog tipo, const std::string& mensaj
     file << cadenaLog << std::endl;
 }
 
+// lee log recibido
 std::string LoggerFiguras::leerLog() {
     std::lock_guard<std::mutex> lock(this->mtx);
-    std::ifstream archivoLectura("log/logInter.txt"); 
+    std::ifstream archivoLectura("logInter/logInter.txt", std::ios::binary); 
+
+    if (!archivoLectura.is_open())
+        return "";
+
+    archivoLectura.seekg(0, std::ios::end); //final
+    std::streamoff tam = archivoLectura.tellg();
+    std::streamoff inicio = tam > 4096 ? tam - 4096 : 0;
+
+    archivoLectura.seekg(inicio);
+    if (inicio != 0){
+        std::string aux;
+        std::getline(archivoLectura, aux);  // descarta la línea incompleta
+    }
+
     std::stringstream buffer;
     buffer << archivoLectura.rdbuf();
+
     return buffer.str();
 }

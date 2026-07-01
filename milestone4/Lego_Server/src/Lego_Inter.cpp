@@ -218,11 +218,11 @@ void Lego_Inter::listen() {
   
 
   // casos de
-  this->discoverySocket->BroadCast("192.168.0.255", ivan.c_str(), ivan.size(),
+  this->discoverySocket->BroadCast("192.168.1.255", ivan.c_str(), ivan.size(),
                                    PUERTO_LEGO_SERVER);
 
   //while(true){
-    this->interSocket->BroadCast("192.168.0.255", listin.data(), listin.size(), \
+    this->interSocket->BroadCast("192.168.1.255", listin.data(), listin.size(), \
                                PUERTO_PRUEBA_JOIN);//PUERTO_PRUEBA_JOIN
   //   sleep(5);
   // }
@@ -559,6 +559,10 @@ void Lego_Inter::connectionHandling(std::stop_token st, VSocket* client) {
             mtx_global.unlock();
             //    std::cout << " figuras globales armadas" << std::endl;
             //  std::cout << filasFiguras << std::endl;
+
+            //comprobacion 
+            //std::cout << "!!!!!!!!!!!!!!!!!!!!!!!!!!!!11 FILAS !!!!!!!!!!!!!!!!!!!!!!!!!!!!11:\n";
+            //std::cout << filasFiguras << std::endl;
             response =
                 build_HttpResponse("200 OK", filasFiguras.size(), "text/html",
                                    connectionType, filasFiguras);
@@ -1088,7 +1092,7 @@ void Lego_Inter::discoverIntermediary(std::stop_token st, VSocket& socket,
             std::string ipRealIntermediario = inet_ntoa(joinRecibido.sourceIp);
             std::string ipIntermediario = inet_ntoa(sender.sin_addr);
             socket.UpdateLocalIP();
-            if (ipIntermediario != socket.getLocalIP() &&ipIntermediario!=std::string("192.168.0.176") ) {
+            if (ipIntermediario != socket.getLocalIP() &&ipIntermediario!=std::string("192.168.1.14") ) {
               VSocket* handSocket;
               OpenConnection(ipIntermediario, PUERTO_PRUEBA_RESPONSE,
                              handSocket,
